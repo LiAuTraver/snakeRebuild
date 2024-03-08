@@ -138,8 +138,12 @@
     <ClCompile Include="ancillarycat.panel.ixx" />
     <ClCompile Include="ancillarycat.print.ixx" />
     <ClCompile Include="ancillarycat.snake.ixx" />
+    <ClCompile Include="ancillarycat.windows.api.ixx" />
     <ClCompile Include="snakeRebuild.cpp" />
     <ClCompile Include="std.ixx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="config.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

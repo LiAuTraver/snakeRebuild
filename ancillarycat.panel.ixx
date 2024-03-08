@@ -20,25 +20,22 @@ namespace panel
 {
 export void showMenu()
 {
+	consolePrint.moveCursor(3, 0);
 	std::ranges::for_each(SNAKE, [](const std::string& str) {
 		consolePrintln.centered(str);
 		});
 	consolePrintln
 		.moveCursor(3, 0)
 		.centered("Snake")
-		.setFontColor(ansiColor::green).moveCursor(1, 0)
-		.centered("Press 1 to start")
-		.setFontColor(ansiColor::red).moveCursor(1, 0)
-		.centered("Press 2 to check the leaderboard")
-		.setFontColor(ansiColor::blue).moveCursor(1, 0)
-		.centered("Press 3 to configure settings")
-		.setFontColor(ansiColor::yellow).moveCursor(1, 0)
-		.centered("Press Ctrl+C to exit")
-		.reset()
-		.updateCursor();
-	/*for (auto i = 0; i < console.height - console.cursorRow - 5; i++)
-	{
-		consolePrintln.fillLine();
-	}*/
+		.moveCursor(1, 0)
+		.centered("Press 1 to start", ansiColor::green)
+		.moveCursor(1, 0)
+		.centered("Press 2 to check the leaderboard", ansiColor::red)
+		.moveCursor(1, 0)
+		.centered("Press 3 to configure settings", ansiColor::blue)
+		.moveCursor(1, 0)
+		.centered("Press 'q' or 'Q' to exit", ansiColor::yellow)
+		.setStyle()
+		.getCursor();
 }
 }

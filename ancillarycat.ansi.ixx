@@ -3,6 +3,7 @@ module;
 export module ancillarycat.ansi;
 
 export enum class ansiColor : int {
+	reset = 0,
 	black = 30,
 	red,
 	green,
@@ -10,10 +11,19 @@ export enum class ansiColor : int {
 	blue,
 	magenta,
 	cyan,
-	white
+	white,
+	blackIntense = 90,
+	redIntense,
+	greenIntense,
+	yellowIntense,
+	blueIntense,
+	magentaIntense,
+	cyanIntense,
+	whiteIntense
 };
 
 export enum class ansiBackground : int {
+	reset = 0,
 	black = 40,
 	red,
 	green,
@@ -21,36 +31,23 @@ export enum class ansiBackground : int {
 	blue,
 	magenta,
 	cyan,
-	white
+	white,
+	blackIntense = 100,
+	resIntense,
+	greenIntense,
+	yellowIntense,
+	blueIntense,
+	magentaIntense,
+	cyanIntense,
+	whiteIntense
 };
 
-export enum class ansiHighlight : int {
-	black = 90,
-	red,
-	green,
-	yellow,
-	blue,
-	magenta,
-	cyan,
-	white
-};
-
-export enum class ansiHighlightBackground : int {
-	black = 100,
-	red,
-	green,
-	yellow,
-	blue,
-	magenta,
-	cyan,
-	white
-};
 
 export enum class ansiStyle : int {
 	reset = 0,
-	bold = 1,
+	bold = 1, // does not work in my terminal
 	underline = 4,
-	blink = 5,
-	reverse = 7,
-	invisible = 8
+	blink = 5, // text blinking
+	reverse = 7, // reverse the color of the text and background
+	invisible = 8 // text invisible
 };

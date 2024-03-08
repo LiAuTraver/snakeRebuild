@@ -2,6 +2,7 @@ module;
 
 #include <Windows.h>
 #include <conio.h>
+#include "config.hpp"
 
 export module ancillarycat.console;
 
@@ -49,19 +50,19 @@ public:
 		cursorCol = cursorCoordinate.X;
 		return *this;
 	}
-	inline Console& setCursorCoordinate(const SHORT row = cursorRow, const SHORT col = cursorCol)
+	inline Console& setCursorCoordinate(SHORT row = DEFAULT_VAL, const SHORT col = DEFAULT_VAL)
 	{
 		cursorCoordinate.X = col;
 		cursorCoordinate.Y = row;
 		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), cursorCoordinate);
-		return *this;
+		return this->getCursorCoordinate();
 	}
 	inline Console& moveCursor(const SHORT deltaRow = 0, const SHORT deltaCol = 0)
 	{
 		cursorCoordinate.Y += deltaRow;
 		cursorCoordinate.X += deltaCol;
 		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), cursorCoordinate);
-		return *this;
+		return this->getCursorCoordinate();
 	}
 	// output attributes control
 public:
@@ -77,16 +78,41 @@ public:
 	}
 	// console interaction
 public:
-	static inline CHAR&& getch() noexcept {
-		return std::move(_getch());
+	static inline int getch() noexcept {
+		return _getch();
+	}
+	inline Console& box(const SHORT& curRow = 0, const SHORT& curCol = 0, SHORT boxHeight = DEFAULT_VAL, SHORT boxWidth = DEFAULT_VAL, const char& border = '+', const char& horizontal = '-', const char& vertical = '|')
+	{
+		if (boxHeight == DEFAULT_VAL)boxHeight = this->height;
+		if (boxWidth == DEFAULT_VAL)boxWidth = this->width;
+		this->setCursorCoordinate(curRow, curCol);
+		std::print("{}", border);
+		for (SHORT i = 0; i < boxWidth - 2; i++) {
+			std::print("{}", horizontal);
+		}
+		std::println("{}", border);
+		this->setCursorCoordinate(curRow + 1, curCol);
+		for (SHORT i = 0; i < boxHeight - 1; i++) {
+			std::print("{}", vertical);
+			this->moveCursor(0, boxWidth - 1);
+			std::print("{}", vertical);
+			this->moveCursor(1, -boxWidth + 1);
+		}
+		std::print("{}", border);
+		for (SHORT i = 0; i < boxWidth - 2; i++) {
+			std::print("{}", horizontal);
+		}
+		std::print("{}", border);
+		return this->setCursorCoordinate(curRow + 1, curCol + 1)
+			.getCursorCoordinate();
 	}
 	// public access
 public:
-	SHORT width{};
-	SHORT height{};
-	inline static COORD cursorCoordinate{};
-	inline static SHORT cursorRow{};
-	inline static SHORT cursorCol{};
+	SHORT width;
+	SHORT height;
+	COORD cursorCoordinate;
+	SHORT cursorRow;
+	SHORT cursorCol;
 private:
 	CONSOLE_SCREEN_BUFFER_INFO consoleScreenBufferInfo_{};
 	HANDLE handleStdin_{};
@@ -94,4 +120,10 @@ private:
 	DWORD stdinMode_{};
 	DWORD stdoutMode_{};
 	CONSOLE_CURSOR_INFO cursorInfo_{};
+	inline Console& terminalSizeChange() {
+		GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &consoleScreenBufferInfo_);
+		width = consoleScreenBufferInfo_.srWindow.Right - consoleScreenBufferInfo_.srWindow.Left + 1;
+		height = consoleScreenBufferInfo_.srWindow.Bottom - consoleScreenBufferInfo_.srWindow.Top + 1;
+		return *this;
+	}
 }console;
