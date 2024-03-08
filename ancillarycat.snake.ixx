@@ -3,7 +3,7 @@ module;
 #include <Windows.h>
 #include <mmsystem.h>
 
-export module  ancillarycat.snake;
+export module ancillarycat.snake;
 
 import ancillarycat.print;
 import ancillarycat.console;

@@ -94,7 +94,7 @@ export void option() {
 			game::snakeGame();
 			break;
 		case '2':
-			game::leaderboard();
+			game::leaderboardInit();
 			break;
 		case '3':
 			game::config();
