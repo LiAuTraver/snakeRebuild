@@ -30,7 +30,19 @@
     <ClCompile Include="ancillarycat.print.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="std.compat.ixx">
+    <ClCompile Include="ancillarycat.panel.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ancillarycat.ansi.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ancillarycat.snake.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ancillarycat.leaderboard.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ancillarycat.config.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -130,11 +130,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ancillarycat.ansi.ixx" />
+    <ClCompile Include="ancillarycat.config.ixx" />
     <ClCompile Include="ancillarycat.console.ixx" />
     <ClCompile Include="ancillarycat.handler.ixx" />
+    <ClCompile Include="ancillarycat.leaderboard.ixx" />
+    <ClCompile Include="ancillarycat.panel.ixx" />
     <ClCompile Include="ancillarycat.print.ixx" />
+    <ClCompile Include="ancillarycat.snake.ixx" />
     <ClCompile Include="snakeRebuild.cpp" />
-    <ClCompile Include="std.compat.ixx" />
     <ClCompile Include="std.ixx" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
