@@ -4,9 +4,9 @@
 #define NO_EXPORT
 #endif
 
-#ifndef DEFAULT_VAL
-#define DEFAULT_VAL -1
-#endif
+constexpr inline short DEFAULT_VAL = -1;
+constexpr inline int EXIT_PROGRAM = 0;
+constexpr inline int RESTART_PROGRAM = 1;
 
 //#if __cplusplus < 202004L
 //#error ("This program requires C++20 or higher, please use a newer compiler.")

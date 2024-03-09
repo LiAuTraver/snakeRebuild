@@ -85,13 +85,36 @@ NO_EXPORT static inline void handleCBreak() {
 	signal(SIGINT, originalHandler);
 }
 
+NO_EXPORT static inline bool checkConsoleSize() {
+	CONSOLE_SCREEN_BUFFER_INFO csbi;
+	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
+	return csbi.srWindow.Right > 50 && csbi.srWindow.Bottom > 20;
+}
+
+NO_EXPORT static inline void showInvalidConsoleSize() {
+	consolePrintln
+		.setStyle(ansiStyle::bold)
+		.centered("Console size is too small.", ansiColor::red, ansiBackground::yellowIntense)
+		.centered("You may need to resize the console.", ansiColor::red, ansiBackground::yellowIntense)
+		.setStyle()
+		.centered("Press any key to continue...", ansiColor::white, ansiBackground::red)
+		.setCursor(console.cursorRow, 0);
+	std::this_thread::sleep_for(std::chrono::seconds(2));
+	consolePrintln
+		.fillLine()
+		.setCursor(console.cursorRow - 2, 0);
+}
+
 export void option() {
 	int ch;
 	while (ch = console.getch()) {
 		switch (ch)
 		{
 		case '1':
-			game::snakeGame();
+			if (handler::checkConsoleSize())
+				game::snakeGame();
+			else
+				handler::showInvalidConsoleSize();
 			break;
 		case '2':
 			game::leaderboardInit();

@@ -4,12 +4,13 @@ module;
 
 export module ancillarycat.leaderboard;
 
+import std;
 import ancillarycat.print;
 import ancillarycat.ansi;
-import std;
 
 namespace game
 {
+NO_EXPORT static bool writeAccess = true;
 // create/open a file to store the leaderboard
 export inline void leaderboardInit() {
 	std::ifstream checkFile("leaderboard.snake", std::ios::in);
@@ -28,5 +29,4 @@ export inline void leaderboardInit() {
 	}
 }
 
-NO_EXPORT static bool writeAccess = true;
 }
