@@ -1,8 +1,8 @@
 module;
 
+#include "config.hpp"
 #include <Windows.h>
 #include <conio.h>
-#include "config.hpp"
 
 export module ancillarycat.console;
 

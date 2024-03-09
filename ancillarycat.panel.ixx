@@ -1,5 +1,6 @@
 module;
-// between `module;` and `export module ancillarycat.panel;` is called `global module fragment`, which can only contain preprocessor directives and import/export declarations.
+
+#include "config.hpp"
 
 export module ancillarycat.panel;
 
@@ -8,7 +9,7 @@ import ancillarycat.ansi;
 import ancillarycat.console;
 import std;
 
-const static std::vector<std::string> SNAKE{
+NO_EXPORT const static std::vector<std::string> SNAKE{
 	" ____              _        ",
 	"/ ___| _ __   __ _| | _____ ",
 	"\\___ \\| '_ \\ / _` | |/ / _ \\",

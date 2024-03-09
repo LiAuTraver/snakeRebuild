@@ -1,8 +1,8 @@
 module;
 
+#include "config.hpp"
 #include <Windows.h>
 #include <mmsystem.h>
-#include "config.hpp"
 
 export module ancillarycat.snake;
 
@@ -20,20 +20,20 @@ export enum class direction {
 NO_EXPORT class Generator {
 public:
 	static const inline direction direct() {
-		std::mt19937 generator(device());
+		std::mt19937 gen(device());
 		std::uniform_int_distribution<int> distribution(0, 3);
-		return static_cast<direction>(distribution(generator));
+		return static_cast<direction>(distribution(gen));
 	}
 	static const inline std::pair<short, short> coordinate(const short& y_lower_bound, const short& y_upper_bound, const short& x_lower_bound, const short& x_upper_bound) {
-		std::mt19937 generator(device());
+		std::mt19937 gen(device());
 		std::uniform_int_distribution<short> y_distribution(y_lower_bound, y_upper_bound);
 		std::uniform_int_distribution<short> x_distribution(x_lower_bound, x_upper_bound);
-		return std::make_pair(y_distribution(generator), x_distribution(generator));
+		return std::make_pair(y_distribution(gen), x_distribution(gen));
 	}
 	static const inline short axis(const short& lower_bound, const short& upper_bound) {
-		std::mt19937 generator(device());
+		std::mt19937 gen(device());
 		std::uniform_int_distribution<short> distribution(lower_bound, upper_bound);
-		return distribution(generator);
+		return distribution(gen);
 	}
 private:
 	static std::random_device device;
@@ -102,6 +102,6 @@ export void snakeGame() {
 	SHORT& width = console.width;
 	SHORT& height = console.height;
 	console.box(5, 5, 10, 10);
-	Snake snake;
+	//Snake snake;
 }
 }

@@ -140,10 +140,12 @@
     <ClCompile Include="ancillarycat.snake.ixx" />
     <ClCompile Include="ancillarycat.windows.api.ixx" />
     <ClCompile Include="snakeRebuild.cpp" />
+    <ClCompile Include="realMain.cpp" />
     <ClCompile Include="std.ixx" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="config.hpp" />
+    <ClInclude Include="limits.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />

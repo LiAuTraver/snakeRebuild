@@ -1,9 +1,9 @@
 module;
 
+#include "config.hpp"
 #include <csignal>
 #include <Windows.h>
 #include <mmsystem.h>
-#include "config.hpp"
 #pragma warning (disable: 4706)
 #pragma warning (disable: 5030)
 #pragma warning (disable: 5222)

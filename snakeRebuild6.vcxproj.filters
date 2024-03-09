@@ -48,9 +48,15 @@
     <ClCompile Include="ancillarycat.windows.api.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="realMain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="config.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="limits.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

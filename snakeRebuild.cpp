@@ -1,20 +1,24 @@
-#include <csignal>
+#include "config.hpp"
 
-import std;
-import ancillarycat.handler;
-import ancillarycat.panel;
-import ancillarycat.leaderboard;
+import ancillarycat.console;
+import ancillarycat.print;
 
-int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
-{
-	handler::oninitialize();
-	panel::showMenu();
-	game::leaderboardInit();
-	handler::option();
-	// initialize leaderboard
-	// Register signal and signal handler, ignore SIGINT here
-	signal(SIGINT, SIG_IGN);
+int main(int argc, char* argv[]) {
+	while (true)
+		// zero to exit, non-zero to restart or else
+		switch (realMain(argc, argv)) {
+		case EXIT_PROGRAM:
+			return EXIT_PROGRAM;
+			[[unreachable]]break;
+		case RESTART_PROGRAM:
+			// TODO: re-initialize the console height and width
+			continue;
+			[[unreachable]]break;
+		default:
+			// currently
+			[[unreachable]] return INT_MAX;
+			break;
+		}
 
-	std::cin.get();
-	return 0;
+	[[unreachable]] return INT_MIN;
 }

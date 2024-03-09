@@ -1,5 +1,6 @@
 module;
 
+#include "config.hpp"
 #include <Windows.h>
 
 #pragma warning(disable:4267)
