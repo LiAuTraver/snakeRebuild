@@ -9,16 +9,17 @@ int main(int argc, char* argv[]) {
 		switch (realMain(argc, argv)) {
 		case EXIT_PROGRAM:
 			return EXIT_PROGRAM;
-			[[unreachable]]break;
+			[[unreachable]] break;
 		case RESTART_PROGRAM:
 			// TODO: re-initialize the console height and width
+			console.terminalSizeChange();
 			continue;
-			[[unreachable]]break;
+		case UNKNOWN_ERROR:
+			return UNKNOWN_ERROR;
+			[[unreachable]] break;
 		default:
-			// currently
-			[[unreachable]] return INT_MAX;
+			[[unlikely]] return INT_MAX;
 			break;
 		}
-
 	[[unreachable]] return INT_MIN;
 }

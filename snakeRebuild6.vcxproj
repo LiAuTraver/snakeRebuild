@@ -145,6 +145,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="config.hpp" />
+    <ClInclude Include="core.hpp" />
     <ClInclude Include="limits.hpp" />
   </ItemGroup>
   <ItemGroup>

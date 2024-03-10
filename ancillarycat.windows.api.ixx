@@ -48,7 +48,7 @@ export inline void initializeSoundEvent() {
 	ExpandEnvironmentStringsW(L"%SystemRoot%", systemRoot, MAX_PATH);
 }
 
-export inline void soundEvent(const std::wstring_view path = L"defaultSystemBeep", soundFlag flag1 = soundFlag::async, soundFlag flag2 = soundFlag::noStop) {
+export inline void soundEvent(const std::wstring_view path = L"", soundFlag flag1 = soundFlag::async, soundFlag flag2 = soundFlag::noStop) {
 	const std::wstring soundPath = static_cast<std::wstring>(systemRoot) + path.data();
 	PlaySoundW(soundPath.c_str(), nullptr, static_cast<DWORD>(flag1) | static_cast<DWORD>(flag2));
 }

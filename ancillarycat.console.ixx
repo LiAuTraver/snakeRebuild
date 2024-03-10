@@ -12,7 +12,7 @@ export class Console {
 	friend class ConsolePrint;
 	friend class ConsolePrintln;
 public:
-	explicit Console(const SHORT minWidth = 0, const SHORT minHeight = 0)
+	explicit Console(const SHORT& minWidth = MIN_WIDTH, const SHORT& minHeight = MIN_HEIGHT)
 	{
 		GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &consoleScreenBufferInfo_);
 		handleStdin_ = GetStdHandle(STD_INPUT_HANDLE);  // Get the standard input handle
@@ -30,9 +30,6 @@ public:
 		SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursorInfo_);
 		width = consoleScreenBufferInfo_.srWindow.Right - consoleScreenBufferInfo_.srWindow.Left + 1;
 		height = consoleScreenBufferInfo_.srWindow.Bottom - consoleScreenBufferInfo_.srWindow.Top + 1;
-		if (width < minWidth || height <= minHeight) {
-			throw std::runtime_error("Console width and height must be not less than the given minimum width and height");
-		}
 	}
 	// cursor control
 public:
@@ -120,6 +117,8 @@ private:
 	DWORD stdinMode_{};
 	DWORD stdoutMode_{};
 	CONSOLE_CURSOR_INFO cursorInfo_{};
+public:
+	// use when the program `restarts` or `resumes` from a `paused` state
 	inline Console& terminalSizeChange() {
 		GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &consoleScreenBufferInfo_);
 		width = consoleScreenBufferInfo_.srWindow.Right - consoleScreenBufferInfo_.srWindow.Left + 1;

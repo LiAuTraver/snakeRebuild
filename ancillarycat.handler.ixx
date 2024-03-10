@@ -19,35 +19,49 @@ import ancillarycat.leaderboard;
 import ancillarycat.config;
 import ancillarycat.ansi;
 import ancillarycat.windows.api;
+import ancillarycat.panel;
 
 namespace handler {
-export inline void oninitialize() {
-	system("CLS");
-	console.setCursorState(true);
-	api::initializeSoundEvent();
-	api::soundEvent(L"\\Media\\Alarm10.wav");
+
+NO_EXPORT inline bool checkConsoleSize() {
+	return !(console.height >= BOX_HEIGHT && console.width >= BOX_WIDTH);
 }
 
-NO_EXPORT static void exitProgram(const int& exitCode = 0) {
-	console
-		.setCursorState(true)
-		.setCursorCoordinate(0, 0);
-	system("CLS");
-	exit(exitCode);
-}
-// cannot export a static function so I removed it.
-// cannot make signalNumber const or reference, dunno why.
-export void signalHandler(const int signalNumber) {
-	switch (signalNumber)
-	{
-	case SIGINT:
-		handler::exitProgram();
-		[[unreachable]]
-		break;
-	default: [[unlikely]]
-			   break;
+NO_EXPORT inline int showInvalidConsoleSize() {
+	consolePrintln
+		.setStyle(ansiStyle::bold)
+		.centered("Console size is too small.", ansiColor::red, ansiBackground::yellowIntense)
+		.centered("You may need to resize the terminal size.", ansiColor::red, ansiBackground::yellowIntense)
+		.setStyle()
+		.centered("After resizing the terminal size, press 'r' or 'R' to restart program,", ansiColor::white, ansiBackground::red)
+		.centered("or press 'q' or 'Q' to quit.", ansiColor::white, ansiBackground::red)
+		.setCursor(console.cursorRow, 0);
+	std::this_thread::sleep_for(std::chrono::seconds(2));
+	consolePrintln
+		.fillLine()
+		.setCursor(console.cursorRow - 2, 0);
+
+	while (int ch = console.getch()) {
+		switch (ch) {
+		case 'r':
+			[[fallthrough]];
+		case 'R':
+			return RESTART_PROGRAM;
+			[[unreachable]]
+			break;
+		case 'q':
+			[[fallthrough]];
+		case 'Q':
+			return EXIT_PROGRAM;
+			[[unreachable]]
+			break;
+		default:
+			break;
+		}
 	}
+	[[unreachable]] return UNKNOWN_ERROR;
 }
+
 
 NO_EXPORT static void defaultHandler() {
 	consolePrintln
@@ -55,7 +69,7 @@ NO_EXPORT static void defaultHandler() {
 		.setStyle(ansiStyle::bold)
 		.centered("invalid key.", ansiColor::red, ansiBackground::yellowIntense)
 		.setCursor(console.cursorRow, 0);
-	api::soundEvent(L"");
+	api::soundEvent();
 	std::this_thread::sleep_for(std::chrono::seconds(2));
 	consolePrintln
 		.fillLine()
@@ -85,37 +99,44 @@ NO_EXPORT static inline void handleCBreak() {
 	signal(SIGINT, originalHandler);
 }
 
-NO_EXPORT static inline bool checkConsoleSize() {
-	CONSOLE_SCREEN_BUFFER_INFO csbi;
-	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
-	return csbi.srWindow.Right > 50 && csbi.srWindow.Bottom > 20;
+// cannot export a static function so I removed it.
+// cannot make signalNumber const or reference, dunno why.
+export void signalHandler(const int&& signalNumber) {
+	switch (signalNumber)
+	{
+	case SIGINT:
+		handler::handleCBreak();
+		[[unreachable]] break;
+	case SIGABRT:
+		// TODO
+		[[unreachable]] break;
+	case SIGFPE:
+		// TODO
+		[[unreachable]] break;
+	case SIGILL:
+		// TODO
+		[[unreachable]] break;
+	case SIGSEGV:
+		// TODO
+		[[unreachable]] break;
+	case SIGTERM:
+		// TODO
+		[[unreachable]] break;
+	case SIGBREAK:
+		// TODO
+		[[unreachable]] break;
+	default: [[unlikely]]
+			   // TODO
+			   break;
+	}
 }
 
-NO_EXPORT static inline void showInvalidConsoleSize() {
-	consolePrintln
-		.setStyle(ansiStyle::bold)
-		.centered("Console size is too small.", ansiColor::red, ansiBackground::yellowIntense)
-		.centered("You may need to resize the console.", ansiColor::red, ansiBackground::yellowIntense)
-		.setStyle()
-		.centered("Press any key to continue...", ansiColor::white, ansiBackground::red)
-		.setCursor(console.cursorRow, 0);
-	std::this_thread::sleep_for(std::chrono::seconds(2));
-	consolePrintln
-		.fillLine()
-		.setCursor(console.cursorRow - 2, 0);
-}
-
-export void option() {
-	int ch;
-	while (ch = console.getch()) {
+NO_EXPORT int option() {
+	while (int ch = console.getch()) {
 		switch (ch)
 		{
 		case '1':
-			if (handler::checkConsoleSize())
-				game::snakeGame();
-			else
-				handler::showInvalidConsoleSize();
-			break;
+			game::snakeGame();
 		case '2':
 			game::leaderboardInit();
 			break;
@@ -128,7 +149,13 @@ export void option() {
 		case 'q':
 			[[fallthrough]];
 		case 'Q':
-			handler::exitProgram();
+			return EXIT_PROGRAM;
+			[[unreachable]]
+			break;
+		case 'r':
+			[[fallthrough]];
+		case 'R':
+			return RESTART_PROGRAM;
 			[[unreachable]]
 			break;
 		default:
@@ -136,8 +163,25 @@ export void option() {
 			break;
 		}
 	}
+	[[unreachable]] return UNKNOWN_ERROR;
 }
 
+export inline int oninitialize() {
+	if (handler::checkConsoleSize()) {
+		if (handler::showInvalidConsoleSize())
+			return RESTART_PROGRAM;
+		return EXIT_PROGRAM;
+	}
+	system("CLS");
+	console.setCursorState(true);
+	api::initializeSoundEvent();
+	api::soundEvent(L"\\Media\\Alarm10.wav");
+	panel::showMenu();
+	game::leaderboardInit();
+	// Register signal and signal handler, ignore SIGINT here
+	signal(SIGINT, SIG_IGN);
+	return handler::option();
+}
 } // namespace handler
 
 #pragma warning (default: 4706)

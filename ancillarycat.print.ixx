@@ -13,6 +13,11 @@ import ancillarycat.ansi;
 export class ConsolePrint
 {
 public:
+	inline ConsolePrint& print(const char& str, const ansiColor& color = ansiColor::white, const ansiBackground& background = ansiBackground::reset)
+	{
+		std::print("\033[{};{}m{}\033[{}m", static_cast<int>(background), static_cast<int>(color), str, static_cast<int>(ansiStyle::reset));
+		return this->getCursor();
+	}
 	inline ConsolePrint& centered(const std::string_view str, const ansiColor& color = ansiColor::white, const ansiBackground& background = ansiBackground::reset)
 	{
 		short padding = (console.width - str.length()) / 2;
@@ -75,6 +80,11 @@ public:
 
 export class ConsolePrintln {
 public:
+	inline ConsolePrintln& println(const std::string_view str, const ansiColor& color = ansiColor::white, const ansiBackground& background = ansiBackground::reset)
+	{
+		std::println("\033[{};{}m{}\033[{}m", static_cast<int>(background), static_cast<int>(color), str, static_cast<int>(ansiStyle::reset));
+		return this->getCursor();
+	}
 	inline ConsolePrintln& centered(const std::string_view str, const ansiColor& color = ansiColor::white, const ansiBackground& background = ansiBackground::reset) {
 		short padding = (console.width - str.length()) / 2;
 		padding < 0 ? padding = 0 : padding;
