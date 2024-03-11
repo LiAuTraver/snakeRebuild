@@ -2,7 +2,6 @@ module;
 
 #include "config.hpp"
 #include <Windows.h>
-#include <mmsystem.h>
 
 export module ancillarycat.snake;
 
@@ -12,9 +11,22 @@ import std;
 
 export enum class direction;
 export class Generator;
+export class Entity;
 export class Food;
 export class Snake;
 export class Node;
+export template <class _MyBase, class _MyDerived> inline bool instanceof(const _MyBase*);
+
+NO_EXPORT int checkInvalidPosition(const Entity&, const Entity&);
+NO_EXPORT int checkOutofBound(const Entity&);
+NO_EXPORT inline int checkSnakeFoodInvalidPosition(Snake&, Food&);
+
+// definition goes below.
+
+template <class _MyBase, class _MyDerived>
+inline bool instanceof(const _MyBase* base) {
+	return dynamic_cast<const _MyDerived*>(base) != nullptr;
+}
 
 enum class direction {
 	UP,
@@ -47,21 +59,38 @@ private:
 
 NO_EXPORT std::random_device Generator::device;
 
-class Food {
+class Entity {
+	friend int checkInvalidPosition(Entity&, Entity&);
+	friend int checkOutofBound(const Entity&);
+	friend int checkSnakeFoodInvalidPosition(Snake&, Food&);
 public:
-	Food() :
-		y(generator.single(START_ROW + 1, START_ROW + BOX_HEIGHT - 2)),
-		x(generator.single(START_COL + 1, START_COL + BOX_WIDTH - 2)),
-		c('$') {}
+	Entity() = default;
+	explicit Entity(const int& isGenerate, const char& _c) : c(_c) {
+		if (isGenerate == GENERATE) {
+			y = generator.single(START_ROW + 1, START_ROW + BOX_HEIGHT - 2);
+			x = generator.single(START_COL + 1, START_COL + BOX_WIDTH - 2);
+		}
+	}
+	explicit Entity(short _y, short _x) : y(_y), x(_x) {}
+	explicit Entity(short _y, short _x, char _c) : y(_y), x(_x), c(_c) {}
+	virtual ~Entity() = default;
 public:
-	// cannot add modifier `const`.
-	inline Food& show() noexcept {
+	[[nodiscard]] virtual constexpr inline const char getChar() const noexcept {
+		return c;
+	}
+	[[nodiscard]] virtual constexpr inline const short getY() const noexcept {
+		return y;
+	}
+	[[nodiscard]] virtual constexpr inline const short getX() const noexcept {
+		return x;
+	}
+	virtual inline Entity& show() noexcept {
 		consolePrint
 			.setCursor(this->y, this->x)
 			.print(this->c);
 		return *this;
 	}
-	inline Food& regenrate() noexcept {
+	virtual inline Entity& regenrate() noexcept {
 		y = generator.single(START_ROW + 1, START_ROW + BOX_HEIGHT - 2);
 		x = generator.single(START_COL + 1, START_COL + BOX_WIDTH - 2);
 		return *this;
@@ -72,83 +101,117 @@ public:
 	char c;
 };
 
-class Node {
+class Food : public Entity {
 public:
-	Node() = default;
-	explicit Node(short _y, short _x, direction _d) : y(_y), x(_x), nDirection(_d), c('O') {}
-	explicit Node(short _y, short _x, direction _d, char _c) : y(_y), x(_x), nDirection(_d), c(_c) {}
-public:
-	// the coordinate of the node
-	short y;
-	short x;
-	// the direction directs where the previous node is
-	direction nDirection;
-	// the character of the node
-	char c;
+	Food() : Entity(GENERATE, '$') {}
 };
 
-class Snake {
+class Node : public Entity {
+public:
+	Node() = default;
+	explicit Node(short _y, short _x, direction _d) : Entity(_y, _x, 'o'), nDirection(_d) {}
+	explicit Node(short _y, short _x) : Entity(_y, _x, 'o') {}
+	explicit Node(short _y, short _x, char _c, direction _d) : Entity(_y, _x, _c), nDirection(_d) {}
+private:
+	// the direction directs where the previous node is
+	direction nDirection;
+};
+
+class Snake : public Entity {
 public:
 	Snake() = delete;
 	explicit Snake(
-		short y_lower_bound,
-		short y_upper_bound,
-		short x_lower_bound,
-		short x_upper_bound) :
+		const short& y_lower_bound, const short& y_upper_bound,
+		const short& x_lower_bound, const short& x_upper_bound,
+		const char& _c) :
+		Entity(GENERATE, _c),
 		hDirection(generator.direct()),
-		y(generator.single(y_lower_bound, y_upper_bound)),
-		x(generator.single(x_lower_bound, x_upper_bound)),
-		c('@'),
-		nodes({}),
-		length(generator.single(2, 4)) {
-		this->print();
-	}
-	explicit Snake(short _y, short _x) :
-		hDirection(generator.direct()),
-		y(_y),
-		x(_x),
-		c('@'),
-		nodes({}),
-		length(generator.single(2, 4)) {
-		this->print();
+		length(1),
+		score(0) {
+		// check snake direction and put the following node
+		switch (hDirection) {
+		case direction::UP:
+			for (short i = 1; i < generator.single(3, 6); i++)
+				nodes.emplace_back(Node(y + i, x, direction::UP));
+			break;
+		case direction::DOWN:
+			for (short i = 1; i < generator.single(3, 6); i++)
+				nodes.emplace_back(Node(y - i, x, direction::DOWN));
+			break;
+		case direction::LEFT:
+			for (short i = 1; i < generator.single(3, 6); i++)
+				nodes.emplace_back(Node(y, x + i, direction::LEFT));
+			break;
+		case direction::RIGHT:
+			for (short i = 1; i < generator.single(3, 6); i++)
+				nodes.emplace_back(Node(y, x - i, direction::RIGHT));
+			break;
+		default:
+			[[unreachable]] break;
+		}
+		this->show();
 	}
 public:
 	// snake head direction
 	direction hDirection;
-	// the coordinate of the snake head
-	short y;
-	short x;
-	// the character of the snake head
-	char c;
 	// the node of the snake
 	std::vector<Node> nodes;
 	short length;
 	short score;
 public:
-	void print() const noexcept {
-		consolePrint
-			.setCursor(this->y, this->x)
-			.print(this->c);
+	virtual inline Snake& show() noexcept override {
+		Entity::show();
+		// TODO: show the snake body
+		for (auto& node : nodes) {
+			node.show();
+		}
+		return *this;
+	};
+public:
+	inline Snake& grow(const short& offset = 1) noexcept {
+		// todo: add a node, and set the direction of the node
+		// increase length and score
+		// occurs when snake eat food		
+		return *this;
 	}
+	// TODO: implement the move and changeDirection
+	//inline Snake& move(const short& offset = 1) noexcept;
+	//inline Snake& changeDirection(const direction& _d) noexcept;
 };
 
-NO_EXPORT inline int checkInvalidPosition(const Snake& snake, const Food& food) {
-	if (snake.y == food.y && snake.x == food.x)
-		return INVALID;
-	for (const Node& node : snake.nodes) {
-		if (node.y == food.y && node.x == food.x) {
+NO_EXPORT inline int checkOutofBound(const Entity& entity) {
+
+}
+
+NO_EXPORT inline int checkSnakeFoodInvalidPosition(Snake& snake, Food& food) {
+	if (snake.y == food.y && snake.x == food.x) {
+	return INVALID;
+	}
+	else
+	{
+		return VALID;
+	}
+}
+NO_EXPORT inline int checkInvalidPosition(Entity& entity1, Entity& entity2) {
+	if (instanceof<Entity, Snake>(&entity1) && instanceof<Entity, Food>(&entity2)) {
+		if (entity1.y == entity2.y && entity1.x == entity2.x) {
 			return INVALID;
 		}
+		// TODO: implement the snake body
 	}
-	return VALID;
+	else if (entity1.y == entity2.y && entity1.x == entity2.x) {
+		return INVALID;
+	}
+	else return VALID;
 }
 
 namespace game {
 export void snakeGame() {
 	system("CLS");
 	console.box(START_ROW, START_COL, BOX_HEIGHT, BOX_WIDTH);
-	Snake snake(START_ROW + 5, START_ROW + BOX_HEIGHT - 5, START_COL + 5, START_COL + BOX_WIDTH - 5);
+	Snake snake(START_ROW + 5, START_ROW + BOX_HEIGHT - 5, START_COL + 5, START_COL + BOX_WIDTH - 5, '@');
 	Food food;
+	Node node(20, 20);
 	while (checkInvalidPosition(snake, food) == INVALID) {
 		food.regenrate();
 	}

@@ -31,6 +31,10 @@
 #define NO_EXPORT
 #endif
 
+#ifndef DEFINITION
+#define DEFINITION
+#endif
+
 #include "limits.hpp"
 #include "core.hpp"
 
