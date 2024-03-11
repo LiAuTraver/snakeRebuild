@@ -4,7 +4,7 @@
 //		that are used throughout the program.
 // If the file is included in a source file, 
 //		it MUST be included first.
-// Otherwise errors such as linker error may occur.
+// Otherwise, errors such as linker error may occur.
 #ifdef _MSC_VER
 
 #include <yvals_core.h>

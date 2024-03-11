@@ -9,10 +9,8 @@ export module ancillarycat.console;
 import std;
 
 export class Console {
-	friend class ConsolePrint;
-	friend class ConsolePrintln;
 public:
-	explicit Console(const SHORT& minWidth = MIN_WIDTH, const SHORT& minHeight = MIN_HEIGHT)
+	explicit Console(const SHORT& minWidth = MIN_WIDTH, const SHORT& minHeight = MIN_HEIGHT) : cursorRow(0),cursorCol(0),cursorCoordinate({0,0})
 	{
 		GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &consoleScreenBufferInfo_);
 		handleStdin_ = GetStdHandle(STD_INPUT_HANDLE);  // Get the standard input handle
@@ -33,13 +31,13 @@ public:
 	}
 	// cursor control
 public:
-	inline Console& setCursorState(const bool state = true)
+	Console& setCursorState(const bool state = true)
 	{
 		cursorInfo_.bVisible = state;
 		SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursorInfo_);
 		return *this;
 	}
-	inline Console& getCursorCoordinate()
+	Console& getCursorCoordinate()
 	{
 		GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &consoleScreenBufferInfo_);
 		cursorCoordinate = consoleScreenBufferInfo_.dwCursorPosition;
@@ -47,14 +45,14 @@ public:
 		cursorCol = cursorCoordinate.X;
 		return *this;
 	}
-	inline Console& setCursorCoordinate(SHORT row = DEFAULT_VAL, const SHORT col = DEFAULT_VAL)
+	Console& setCursorCoordinate(const SHORT row = DEFAULT_VAL, const SHORT col = DEFAULT_VAL)
 	{
 		cursorCoordinate.X = col;
 		cursorCoordinate.Y = row;
 		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), cursorCoordinate);
 		return this->getCursorCoordinate();
 	}
-	inline Console& moveCursor(const SHORT deltaRow = 0, const SHORT deltaCol = 0)
+	Console& moveCursor(const SHORT deltaRow = 0, const SHORT deltaCol = 0)
 	{
 		cursorCoordinate.Y += deltaRow;
 		cursorCoordinate.X += deltaCol;
@@ -63,22 +61,22 @@ public:
 	}
 	// output attributes control
 public:
-	inline Console& resetAnsi()
+	Console& resetAnsi()
 	{
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
 		return *this;
 	}
-	inline Console& setAnsi(const WORD attribute)
+	Console& setAnsi(const WORD attribute)
 	{
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), attribute);
 		return *this;
 	}
 	// console interaction
 public:
-	static inline int getch() noexcept {
+	static int getch() noexcept {
 		return _getch();
 	}
-	inline Console& box(const SHORT& curRow = 0, const SHORT& curCol = 0, SHORT boxHeight = DEFAULT_VAL, SHORT boxWidth = DEFAULT_VAL, const char& border = '+', const char& horizontal = '-', const char& vertical = '|')
+	Console& box(const SHORT& curRow = 0, const SHORT& curCol = 0, SHORT boxHeight = DEFAULT_VAL, SHORT boxWidth = DEFAULT_VAL, const char& border = '+', const char& horizontal = '-', const char& vertical = '|')
 	{
 		if (boxHeight == DEFAULT_VAL)boxHeight = this->height;
 		if (boxWidth == DEFAULT_VAL)boxWidth = this->width;
@@ -119,7 +117,7 @@ private:
 	CONSOLE_CURSOR_INFO cursorInfo_{};
 public:
 	// use when the program `restarts` or `resumes` from a `paused` state
-	inline Console& terminalSizeChange() {
+	Console& terminalSizeChange() {
 		GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &consoleScreenBufferInfo_);
 		width = consoleScreenBufferInfo_.srWindow.Right - consoleScreenBufferInfo_.srWindow.Left + 1;
 		height = consoleScreenBufferInfo_.srWindow.Bottom - consoleScreenBufferInfo_.srWindow.Top + 1;

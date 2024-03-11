@@ -3,7 +3,7 @@ module;
 #include "config.hpp"
 #include <csignal>
 #include <Windows.h>
-#include <mmsystem.h>
+
 #pragma warning (disable: 4706)
 #pragma warning (disable: 5030)
 #pragma warning (disable: 5222)
@@ -20,11 +20,15 @@ import ancillarycat.config;
 import ancillarycat.ansi;
 import ancillarycat.windows.api;
 import ancillarycat.panel;
+import std;
 
 namespace handler {
 
-NO_EXPORT inline bool checkConsoleSize() {
-	return !(console.height >= BOX_HEIGHT && console.width >= BOX_WIDTH);
+NO_EXPORT inline int checkConsoleSize() {
+	if (console.height >= BOX_HEIGHT && console.width >= BOX_WIDTH)
+		return VALID;
+	else
+		return INVALID;
 }
 
 NO_EXPORT inline int showInvalidConsoleSize() {
@@ -47,14 +51,10 @@ NO_EXPORT inline int showInvalidConsoleSize() {
 			[[fallthrough]];
 		case 'R':
 			return RESTART_PROGRAM;
-			[[unreachable]]
-			break;
 		case 'q':
 			[[fallthrough]];
 		case 'Q':
 			return EXIT_PROGRAM;
-			[[unreachable]]
-			break;
 		default:
 			break;
 		}
@@ -82,36 +82,37 @@ NO_EXPORT static inline void handleCBreak() {
 
 	consolePrintln
 		.setStyle(ansiStyle::blink)
+		.setCursor(console.height - 5, 0)
 		.moveCursor(1, 0)
 		.centered("Ctrl + C does not work here :P", ansiColor::white, ansiBackground::red)
 		.setStyle(ansiStyle::reverse)
 		.moveCursor(1, 0)
 		.centered("Note: Press q or Q to quit", ansiColor::white, ansiBackground::red)
-		.setCursor(console.cursorRow - 2, 0);
+		.setCursor(console.height - 4, 0);
 	api::soundEvent(L"\\Media\\Windows Logon.wav");
 	std::this_thread::sleep_for(std::chrono::seconds(3));
 
 	consolePrintln
 		.fillLine(' ', 4)
-		.setCursor(console.cursorRow - 5, 0);
+		.setCursor(console.height - 5, 0);
 
 	// Restore the original signal handler
 	signal(SIGINT, originalHandler);
 }
 
 // cannot export a static function so I removed it.
-// cannot make signalNumber const or reference, dunno why.
-export void signalHandler(const int&& signalNumber) {
+// cannot make signalNumber const or l/r value reference
+export void signalHandler(const int signalNumber) {
 	switch (signalNumber)
 	{
 	case SIGINT:
 		handler::handleCBreak();
 		[[unreachable]] break;
 	case SIGABRT:
-		// TODO
+		// TODO: implement the handler for abort signal
 		[[unreachable]] break;
 	case SIGFPE:
-		// TODO
+		// TODO: implement the handler for 
 		[[unreachable]] break;
 	case SIGILL:
 		// TODO
@@ -132,11 +133,13 @@ export void signalHandler(const int&& signalNumber) {
 }
 
 NO_EXPORT int option() {
-	while (int ch = console.getch()) {
+	while (const int ch = console.getch()) {
 		switch (ch)
 		{
 		case '1':
+			signal(SIGINT, handler::signalHandler);
 			game::snakeGame();
+			break;
 		case '2':
 			game::leaderboardInit();
 			break;
@@ -167,8 +170,8 @@ NO_EXPORT int option() {
 }
 
 export inline int oninitialize() {
-	if (handler::checkConsoleSize()) {
-		if (handler::showInvalidConsoleSize())
+	if (handler::checkConsoleSize() == INVALID) {
+		if (handler::showInvalidConsoleSize() == RESTART_PROGRAM)
 			return RESTART_PROGRAM;
 		return EXIT_PROGRAM;
 	}
@@ -183,7 +186,6 @@ export inline int oninitialize() {
 	return handler::option();
 }
 } // namespace handler
-
 #pragma warning (default: 4706)
 #pragma warning (default: 5030)
 #pragma warning (default: 5222)

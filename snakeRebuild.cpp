@@ -14,6 +14,7 @@ int main(int argc, char* argv[]) {
 			// TODO: re-initialize the console height and width
 			console.terminalSizeChange();
 			continue;
+			[[unreachable]] break;
 		case UNKNOWN_ERROR:
 			return UNKNOWN_ERROR;
 			[[unreachable]] break;
