@@ -133,6 +133,7 @@ NO_EXPORT int option() {
 		case '1':
 			signal(SIGINT, handler::signalHandler);
 			game::snakeGame();
+			panel::showMenu();
 			break;
 		case '2':
 			game::leaderboardInit();

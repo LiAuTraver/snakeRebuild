@@ -9,18 +9,18 @@ import std;
 
 export class Console final {
 public:
-	explicit Console(const SHORT& minWidth = MIN_WIDTH, const SHORT& minHeight = MIN_HEIGHT);
+	explicit Console();
 	Console& setCursorState(const bool& state = true) noexcept;
 	Console& getCursorCoordinate() noexcept;
 	Console& setCursorCoordinate(const SHORT row = DEFAULT_VAL, const SHORT col = DEFAULT_VAL);
 	Console& moveCursor(const SHORT deltaRow = 0, const SHORT deltaCol = 0);
 	Console& resetAnsi() noexcept;
 	Console& setAnsi(const WORD attribute) noexcept;
-	static const int getch() noexcept;
+	static const int getch(const bool& needRealKey = false) noexcept;
 	Console& box(const SHORT& curRow = 0, const SHORT& curCol = 0, SHORT boxHeight = DEFAULT_VAL, SHORT boxWidth = DEFAULT_VAL, const char& border = '+', const char& horizontal = '-', const char& vertical = '|');
 	Console& terminalSizeChange();
-	Console& print(const char& str, const ansiColor& color = ansiColor::white, const ansiBackground& background = ansiBackground::reset) noexcept;
-	Console& println(const char& str, const ansiColor& color = ansiColor::white, const ansiBackground& background = ansiBackground::reset) noexcept;
+	Console& print(std::string_view str, const ansiColor& color = ansiColor::white, const ansiBackground& background = ansiBackground::reset) noexcept;
+	Console& println(std::string_view str, const ansiColor& color = ansiColor::white, const ansiBackground& background = ansiBackground::reset) noexcept;
 	Console& centered(const std::string_view str, const ansiColor& color = ansiColor::white, const ansiBackground& background = ansiBackground::reset, const bool& newline = true) noexcept;
 	Console& centered(const std::string_view str, const bool& newline) noexcept {
 		return this->centered(str, ansiColor::white, ansiBackground::reset, newline);
@@ -34,8 +34,25 @@ public:
 		return this->rightAligned(str, ansiColor::white, ansiBackground::reset, newline);
 	}
 	Console& setStyle(const ansiStyle& style = ansiStyle::reset) noexcept;
-	Console& fillLine(const char& fillChar = ' ', const int& dRow = 1, const bool& newline = true)noexcept;
+	Console& fillLine(const char& fillChar = ' ', const int& dRow = 1, const bool& newline = false)noexcept;
+	Console& centeredAndReturn(const SHORT& lineNum, const std::string_view str, const ansiColor& color, const ansiBackground& background) noexcept
+	{
+		return this->return_impl_ln(lineNum, str, color, background);
+	}
+	Console& printAndReturn(const SHORT& row, const SHORT& col, const std::string_view str, const ansiColor& color = ansiColor::white, const ansiBackground& background = ansiBackground::reset) noexcept
+	{
+		return this->return_impl_ln(row,str, color, background);
+	}
+	Console& top(const std::string_view str, const ansiColor& color = ansiColor::white, const ansiBackground& background = ansiBackground::reset) noexcept {
+		return this->centeredAndReturn(0, str, color, background);
+	}
+	Console& bot(const std::string_view str, const ansiColor& color = ansiColor::white, const ansiBackground& background = ansiBackground::reset) noexcept {
+		return this->centeredAndReturn(height - 1, str, color, background);
+	}
+
 private:
+	Console& return_impl(const SHORT& row, const SHORT& col, const std::string_view str, const ansiColor& color, const ansiBackground& background) noexcept;
+	Console& return_impl_ln(const SHORT& row,const std::string_view str, const ansiColor& color, const ansiBackground& background) noexcept;
 public:
 	SHORT width;
 	SHORT height;

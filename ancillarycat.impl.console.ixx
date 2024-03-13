@@ -8,7 +8,7 @@ import ancillarycat.console;
 import std;
 
 
-Console::Console(const SHORT& minWidth, const SHORT& minHeight) : cursorRow(0), cursorCol(0), cursorCoordinate({ 0,0 })
+Console::Console() : cursorRow(0), cursorCol(0), cursorCoordinate({ 0,0 })
 {
 	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &consoleScreenBufferInfo_);
 	handleStdin_ = GetStdHandle(STD_INPUT_HANDLE);  // Get the standard input handle
@@ -44,9 +44,10 @@ Console& Console::getCursorCoordinate() noexcept
 }
 Console& Console::setCursorCoordinate(const SHORT row, const SHORT col)
 {
-	this->getCursorCoordinate();
-	cursorCoordinate.X = col;
+	this
+		->getCursorCoordinate();
 	cursorCoordinate.Y = row;
+	cursorCoordinate.X = col;
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), cursorCoordinate);
 	return this->getCursorCoordinate();
 }
@@ -69,8 +70,8 @@ Console& Console::setAnsi(const WORD attribute) noexcept
 	return *this;
 }
 // console interaction
-const int Console::getch() noexcept {
-	return _getch();
+const int Console::getch(const bool& needRealKey) noexcept {
+	return needRealKey ? _kbhit() : _getch();
 }
 Console& Console::box(const SHORT& curRow, const SHORT& curCol, SHORT boxHeight, SHORT boxWidth, const char& border, const char& horizontal, const char& vertical)
 {
@@ -105,20 +106,21 @@ Console& Console::terminalSizeChange() {
 	return *this;
 }
 
-Console& Console::print(const char& str, const ansiColor& color, const ansiBackground& background) noexcept
+Console& Console::print(std::string_view str, const ansiColor& color, const ansiBackground& background) noexcept
 {
-	std::print("\033[{};{}m{}\033[{}m", static_cast<int>(background), static_cast<int>(color), str, static_cast<int>(ansiStyle::reset));
+	std::print("\033[{};{}m{}\033[{}m", static_cast<int>(background), static_cast<int>(color), str.data(), static_cast<int>(ansiStyle::reset));
 	return this->getCursorCoordinate();
 }
-Console& Console::println(const char& str, const ansiColor& color, const ansiBackground& background) noexcept
+Console& Console::println(std::string_view str, const ansiColor& color, const ansiBackground& background) noexcept
 {
-	std::print("\033[{};{}m{}\033[{}m\n", static_cast<int>(background), static_cast<int>(color), str, static_cast<int>(ansiStyle::reset));
+	std::print("\033[{};{}m{}\033[{}m\n", static_cast<int>(background), static_cast<int>(color), str.data(), static_cast<int>(ansiStyle::reset));
 	return this->getCursorCoordinate();
 }
 Console& Console::centered(const std::string_view str, const ansiColor& color, const ansiBackground& background, const bool& newline) noexcept
 {
 	short padding = (width - str.length()) / 2;
 	padding < 0 ? padding = 0 : padding;
+	std::print("\033[K ");
 	this->moveCursor(0, padding);
 	std::print("\033[{};{}m{}\033[{}m", static_cast<int>(background), static_cast<int>(color), str, static_cast<int>(ansiStyle::reset));
 	if (newline)std::print("\n");
@@ -148,17 +150,46 @@ Console& Console::setStyle(const ansiStyle& style) noexcept
 		static_cast<int>(style));
 	return this->getCursorCoordinate();
 }
-Console& Console::fillLine(const char& fillChar, const int& dRow, const bool& )noexcept
+Console& Console::fillLine(const char& fillChar, const int& dRow, const bool& newline)noexcept
 {
 	if (dRow < 1)
 		return *this;
-	this->setCursorCoordinate(cursorRow - 1, 0);
-	std::string line(width - 1, fillChar);
+	// return to the beginning of the line
+	std::string line(width, fillChar);
 	for (int count = 0; count < dRow; count++) {
-		std::println("\033[{}m{}\033[{}m", static_cast<int>(ansiStyle::reset), line, static_cast<int>(ansiStyle::reset));
+		std::print("\r\033[K\033[{}m{}\033[{}m", static_cast<int>(ansiStyle::reset), line, static_cast<int>(ansiStyle::reset));
 	}
+	if (newline)std::print("\n");
 	return this->getCursorCoordinate();
 }
+
+Console& Console::return_impl(const SHORT& row, const SHORT& col, const std::string_view str, const ansiColor& color, const ansiBackground& background) noexcept
+{
+	const SHORT preY = cursorCoordinate.Y;
+	const SHORT preX = cursorCoordinate.X;
+	return this->setCursorCoordinate(row, col)
+		.print(str, color, background)
+		.setCursorCoordinate(preY, preX);
+	// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ get back to the original cursor position
+}
+
+Console& Console::return_impl_ln(const SHORT& row,const std::string_view str, const ansiColor& color, const ansiBackground& background) noexcept
+{
+	const SHORT preY = cursorCoordinate.Y;
+	const SHORT preX = cursorCoordinate.X;
+	return this->setCursorCoordinate(row,0)
+		.centered(str, color, background,false)
+		.setCursorCoordinate(preY, preX);
+	// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ get back to the original cursor position
+}
+
+
+//Console& Console::fill_line_impl() noexcept
+//{
+//	std::string line(width - 1, ' ');
+//	std::println("\033[{}m{}\033[{}m", static_cast<int>(ansiStyle::reset), line, static_cast<int>(ansiStyle::reset));
+//	return *this;
+//}
 
 //decltype(&Console::print) log = &this->print;
 
