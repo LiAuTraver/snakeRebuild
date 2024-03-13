@@ -35,7 +35,7 @@
 #define DEFINITION
 #endif
 
-#include "limits.hpp"
-#include "core.hpp"
+import "limits.hpp";
+import "core.hpp";
 
 extern inline int realMain([[maybe_unused]] const int& argc, [[maybe_unused]] char* argv[]);

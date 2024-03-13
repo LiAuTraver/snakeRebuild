@@ -137,7 +137,6 @@
     <ClCompile Include="ancillarycat.ansi.ixx" />
     <ClCompile Include="ancillarycat.config.ixx" />
     <ClCompile Include="ancillarycat.console.ixx" />
-    <ClCompile Include="ancillarycat.impl.console.ixx" />
     <ClCompile Include="ancillarycat.handler.ixx" />
     <ClCompile Include="ancillarycat.leaderboard.ixx" />
     <ClCompile Include="ancillarycat.panel.ixx" />

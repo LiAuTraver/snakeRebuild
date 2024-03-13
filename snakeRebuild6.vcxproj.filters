@@ -48,9 +48,6 @@
     <ClCompile Include="realMain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ancillarycat.impl.console.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="config.hpp">

@@ -18,8 +18,10 @@ int main(int argc, char* argv[]) {
 			return UNKNOWN_ERROR;
 			[[unreachable]] break;
 		default:
+#define INT_MAX 2147483647
 			[[unlikely]] return INT_MAX;
 			break;
 		}
+#define INT_MIN -2147483648
 	[[unreachable]] return INT_MIN;
 }
