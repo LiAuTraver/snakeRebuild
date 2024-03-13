@@ -6,6 +6,7 @@ module;
 #pragma warning(disable:4267)
 export module ancillarycat.print;
 
+#if 0
 import std.compat;
 import ancillarycat.console;
 import ancillarycat.ansi;
@@ -13,18 +14,18 @@ import ancillarycat.ansi;
 export class ConsolePrint
 {
 public:
-	inline ConsolePrint& print(const char& str, const ansiColor& color = ansiColor::white, const ansiBackground& background = ansiBackground::reset)
-	{
-		std::print("\033[{};{}m{}\033[{}m", static_cast<int>(background), static_cast<int>(color), str, static_cast<int>(ansiStyle::reset));
-		return this->getCursor();
-	}
+	//inline ConsolePrint& print(const char& str, const ansiColor& color = ansiColor::white, const ansiBackground& background = ansiBackground::reset)
+	//{
+	//	std::print("\033[{};{}m{}\033[{}m", static_cast<int>(background), static_cast<int>(color), str, static_cast<int>(ansiStyle::reset));
+	//	return this->getCursorCoordinate();
+	//}
 	inline ConsolePrint& centered(const std::string_view str, const ansiColor& color = ansiColor::white, const ansiBackground& background = ansiBackground::reset)
 	{
 		short padding = (console.width - str.length()) / 2;
 		padding < 0 ? padding = 0 : padding;
 		this->moveCursor(0, padding);
 		std::print("\033[{};{}m{}\033[{}m", static_cast<int>(background), static_cast<int>(color), str, static_cast<int>(ansiStyle::reset));
-		return this->getCursor();
+		return this->getCursorCoordinate();
 	}
 	inline ConsolePrint& rightAligned(const std::string_view str, const ansiColor& color = ansiColor::white, const ansiBackground& background = ansiBackground::reset)
 	{
@@ -32,13 +33,13 @@ public:
 		padding < 0 ? padding = 0 : padding;
 		this->moveCursor(0, padding);
 		std::print("\033[{};{}m{}\033[{}m", static_cast<int>(background), static_cast<int>(color), str, static_cast<int>(ansiStyle::reset));
-		return this->getCursor();
+		return this->getCursorCoordinate();
 	}
 	inline ConsolePrint& leftAligned(const std::string_view str, const ansiColor& color = ansiColor::white, const ansiBackground& background = ansiBackground::reset)
 	{
-		this->getCursor();
+		this->getCursorCoordinate();
 		std::print("\033[{};{}m{}\033[{}m", static_cast<int>(background), static_cast<int>(color), str, static_cast<int>(ansiStyle::reset));
-		return this->getCursor();
+		return this->getCursorCoordinate();
 	}
 	inline ConsolePrint& fillLine(const char fillChar = ' ', const int dRow = 1) {
 		if (dRow < 1)
@@ -50,15 +51,15 @@ public:
 		for (int count = 0; count < 1; count++) {
 			std::println("\033[{}m{}\033[{}m", static_cast<int>(ansiStyle::reset), line, static_cast<int>(ansiStyle::reset));
 		}
-		return this->getCursor();
+		return this->getCursorCoordinate();
 	}
 	inline ConsolePrint& setStyle(const ansiStyle& style = ansiStyle::reset)
 	{
 		std::print("\033[{}m",
 			static_cast<int>(style));
-		return this->getCursor();
+		return this->getCursorCoordinate();
 	}
-	inline ConsolePrint& getCursor()
+	inline ConsolePrint& getCursorCoordinate()
 	{
 		console
 			.getCursorCoordinate();
@@ -68,13 +69,13 @@ public:
 	{
 		console
 			.moveCursor(deltaRow, deltaCol);
-		return  this->getCursor();
+		return  this->getCursorCoordinate();
 	}
-	inline ConsolePrint& setCursor(const SHORT row = console.cursorRow, const SHORT col = console.cursorCol)
+	inline ConsolePrint& setCursorCoordinate(const SHORT row = console.cursorRow, const SHORT col = console.cursorCol)
 	{
 		console
 			.setCursorCoordinate(row, col);
-		return  this->getCursor();
+		return  this->getCursorCoordinate();
 	}
 }consolePrint;
 
@@ -134,12 +135,12 @@ public:
 			.moveCursor(deltaRow, deltaCol);
 		return  this->getCursor();
 	}
-	inline ConsolePrintln& setCursor(const SHORT row = console.cursorRow, const SHORT col = console.cursorCol)
+	inline ConsolePrintln& setCursorCoordinate(const SHORT row = console.cursorRow, const SHORT col = console.cursorCol)
 	{
 		console
 			.setCursorCoordinate(row, col);
 		return  this->getCursor();
 	}
 }consolePrintln;
-
+#endif
 #pragma warning(default:4267)

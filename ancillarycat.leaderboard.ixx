@@ -1,11 +1,11 @@
 module;
 
-#include "config.hpp"
 
 export module ancillarycat.leaderboard;
 
+import "config.hpp";
 import std;
-import ancillarycat.print;
+import ancillarycat.console;
 import ancillarycat.ansi;
 
 namespace game
@@ -20,7 +20,7 @@ export inline void leaderboardInit() {
 		std::ofstream file("leaderboard.snake");
 		if (file.fail()) {
 			writeAccess = false;
-			consolePrintln
+			console
 				.setStyle(ansiStyle::blink)
 				.centered("Error: Unable to create leaderboard file", ansiColor::red, ansiBackground::black);
 			std::this_thread::sleep_for(std::chrono::seconds(2));

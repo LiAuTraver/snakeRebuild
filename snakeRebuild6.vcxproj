@@ -60,15 +60,19 @@
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\Templates\Cpp23,std.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\Templates\Cpp23,std.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\Templates\Cpp23,std.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\Templates\Cpp23,std.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -133,10 +137,10 @@
     <ClCompile Include="ancillarycat.ansi.ixx" />
     <ClCompile Include="ancillarycat.config.ixx" />
     <ClCompile Include="ancillarycat.console.ixx" />
+    <ClCompile Include="ancillarycat.impl.console.ixx" />
     <ClCompile Include="ancillarycat.handler.ixx" />
     <ClCompile Include="ancillarycat.leaderboard.ixx" />
     <ClCompile Include="ancillarycat.panel.ixx" />
-    <ClCompile Include="ancillarycat.print.ixx" />
     <ClCompile Include="ancillarycat.snake.ixx" />
     <ClCompile Include="ancillarycat.windows.api.ixx" />
     <ClCompile Include="snakeRebuild.cpp" />

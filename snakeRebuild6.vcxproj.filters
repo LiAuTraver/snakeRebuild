@@ -27,9 +27,6 @@
     <ClCompile Include="ancillarycat.handler.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ancillarycat.print.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ancillarycat.panel.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -49,6 +46,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="realMain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ancillarycat.impl.console.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

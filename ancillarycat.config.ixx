@@ -2,14 +2,14 @@ module;
 
 export module ancillarycat.config;
 
-import ancillarycat.print;
+import ancillarycat.console;
 
 namespace game
 {
 export void config()
 {
-	consolePrintln
-		.centered("Config is not implemented yet")
-		.centered("This is a test string");
+	console
+		.centered("Config is not implemented yet",true)
+		.centered("This is a test string",true);
 }
 }

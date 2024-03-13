@@ -1,11 +1,10 @@
 module;
 
-#include "config.hpp"
-#include <Windows.h>
-
 export module ancillarycat.snake;
 
-import ancillarycat.print;
+import "config.hpp";
+import <conio.h>;
+import <Windows.h>;
 import ancillarycat.console;
 import std;
 
@@ -19,12 +18,11 @@ export template <class _MyBase, class _MyDerived> bool instanceof(_MyBase*);
 NO_EXPORT int checkInvalidPosition(Entity&, Entity&);
 NO_EXPORT int checkSnakeFoodInvalidPosition(const Snake&, const Food&);
 NO_EXPORT int checkOutofBound(const Entity&);
+constinit int time = 0; // for debugging
 namespace game
 {
 export void snakeGame();
 }
-//NO_EXPORT direction checkDirection(const direction&);
-
 // definition goes below.
 
 /*
@@ -93,15 +91,16 @@ class Entity {
 	friend int checkSnakeFoodInvalidPosition(const Snake&, const Food&);
 #pragma region Constructor
 public:
-	explicit Entity() : y(0), x(0), c(' '), nDirection(direction::NO_DIRECTION) {}
+	explicit Entity() : y(0), x(0), c(' '), nDirection(direction::NO_DIRECTION), speed(0) {}
 	explicit Entity(const Entity& entity) : y(entity.y), x(entity.x), c(entity.c), nDirection(entity.nDirection) {}
-	explicit Entity(Entity&& entity) noexcept : y(entity.y), x(entity.x), c(entity.c), nDirection(entity.nDirection) {
+	explicit Entity(Entity&& entity) noexcept : y(entity.y), x(entity.x), c(entity.c), nDirection(entity.nDirection), speed(entity.speed) {
 		entity.y = 0;
 		entity.x = 0;
 		entity.c = ' ';
 		entity.nDirection = direction::NO_DIRECTION;
+		entity.speed = 0;
 	}
-	explicit Entity(const int& generateTag, const char& _c) : c(_c) {
+	explicit Entity(const int& generateTag, const char& _c) : c(_c), speed(0) {
 		switch (generateTag) {
 		case GENERATE:
 			y = generator.single(START_ROW + 1, START_ROW + BOX_HEIGHT - 2);
@@ -121,16 +120,16 @@ public:
 
 		}
 	}
-	explicit Entity(const short& _y, const short& _x) : y(_y), x(_x), c(' '), nDirection(direction::NO_DIRECTION) {}
-	explicit Entity(const short& _y, const short& _x, const char& _c) : y(_y), x(_x), c(_c), nDirection(direction::NO_DIRECTION) {}
-	explicit Entity(const short& _y, const short& _x, const char& _c, const direction& _d) : y(_y), x(_x), c(_c), nDirection(_d) {}
+	explicit Entity(const short& _y, const short& _x) : y(_y), x(_x), c(' '), nDirection(direction::NO_DIRECTION), speed(0) {}
+	explicit Entity(const short& _y, const short& _x, const char& _c) : y(_y), x(_x), c(_c), nDirection(direction::NO_DIRECTION), speed(0) {}
+	explicit Entity(const short& _y, const short& _x, const char& _c, const direction& _d) : y(_y), x(_x), c(_c), nDirection(_d), speed(0) {}
 	virtual ~Entity() = default;
 #pragma endregion
 public:
 	// 'useful' function
 	virtual Entity& show() noexcept {
-		consolePrint
-			.setCursor(this->y, this->x)
+		console
+			.setCursorCoordinate(this->y, this->x)
 			.print(this->c);
 		return *this;
 	}
@@ -141,46 +140,49 @@ public:
 	}
 	virtual Entity& move(const short& offset = 1) noexcept
 	{
-		consolePrint
-			.setCursor(y, x)
+		console
+			.setCursorCoordinate(y, x)
 			.print(' ');
 		switch (nDirection)
 		{
 		case direction::UP:
-			y -= offset;
+			y -= static_cast<short>(offset * speed);
 			break;
 		case direction::DOWN:
-			y += offset;
+			y += static_cast<short>(offset * speed);
 			break;
 		case direction::LEFT:
-			x -= offset;
+			x -= static_cast<short>(offset * speed);
 			break;
 		case direction::RIGHT:
-			x += offset;
+			x += static_cast<short>(offset * speed);
 			break;
 		default:
-			[[unlikely]]
-			exit(INVALID_DIRECTION_INPUT);
+			[[unlikely]];
+			//exit(INVALID_DIRECTION_INPUT); // sth wrong here
 		}
-		consolePrint
-			.setCursor(y, x)
+		console
+			.setCursorCoordinate(y, x)
 			.print(c);
 		return *this;
 	}
 #pragma region 'get' Function
 public:
 	// probably 'useless' function, I thought.
-	[[nodiscard]] virtual constexpr char getChar() const noexcept {
+	[[nodiscard]] virtual constexpr char getChar() const noexcept final {
 		return c;
 	}
-	[[nodiscard]] virtual constexpr short getY() const noexcept {
+	[[nodiscard]] virtual constexpr short getY() const noexcept final {
 		return y;
 	}
-	[[nodiscard]] virtual constexpr short getX() const noexcept {
+	[[nodiscard]] virtual constexpr short getX() const noexcept final {
 		return x;
 	}
-	[[nodiscard]] virtual constexpr direction getDirection() const noexcept {
+	[[nodiscard]] virtual constexpr direction getDirection() const noexcept final {
 		return nDirection;
+	}
+	[[nodiscard]] virtual constexpr double getSpeed() const noexcept final {
+		return speed;
 	}
 #pragma endregion
 public:
@@ -189,6 +191,7 @@ public:
 	short x;
 	char c;
 	direction nDirection;
+	double speed;
 };
 
 class Food final : public Entity {
@@ -196,7 +199,7 @@ public:
 	// as now food is simple, I don't think it's necessary to have lots of ctor
 	Food() : Entity(GENERATE, '$') {}
 	// (temporary) disable the move function for food
-	Food& move(const short& offset = 1) noexcept override {
+	Food& move([[maybe_unused]]const short& offset = 1) noexcept override {
 		return *this;
 	}
 	virtual ~Food() noexcept override {}
@@ -209,12 +212,14 @@ public:
 
 class Snake final : public Entity {
 public:
-	explicit Snake() : Entity(), length(1), score(0), speed(1) {}
+	explicit Snake() : Entity(), length(1), score(0) {
+		speed = 1;
+	}
 	explicit Snake(const char& _c) :
 		Entity(GENERATE, _c),
 		length(1),
-		score(0),
-		speed(1) {
+		score(0) {
+		speed = 1;
 		// check snake direction and put the following node
 		for (short i = 1; i < generator.single(3, 6); i++)
 			nodes.emplace_back(Node(y + i, x, nDirection));
@@ -226,7 +231,6 @@ public:
 	std::vector<Node> nodes;
 	short length;
 	short score;
-	double speed;
 public:
 	virtual Snake& show() noexcept override {
 		Entity::show();
@@ -248,6 +252,12 @@ public:
 	virtual Snake& move(const short& offset = 1) noexcept override {
 		Entity::move(offset);
 		// TODO: implement body movement
+
+		// debug
+		console.setCursorCoordinate(0, 0);
+		console.centered("You pressed a key.now you have pressed");
+		std::print(" {} keys in total.", time++);
+		console.setCursorCoordinate(y, x);
 		return *this;
 	}
 	//inline Snake& changeDirection(const direction& _d) noexcept;
@@ -298,44 +308,31 @@ DEFINITION void snakeGame() {
 	console.box(START_ROW, START_COL, BOX_HEIGHT, BOX_WIDTH);
 	Snake snake('@');
 	Food food;
-	while (int ch = console.getch()) {
-		switch (ch) {
-			// key up
-		case 72:
-			snake.nDirection = direction::UP;
-			break;
-		case 80:
-			snake.nDirection = direction::DOWN;
-			break;
-		case 75:
-			snake.nDirection = direction::LEFT;
-			break;
-		case 77:
-			snake.nDirection = direction::RIGHT;
-			break;
-		default:
-			break;
+	int ch;
+	while (true) {
+		if (_kbhit()) {
+			ch = _getch();
+			// alpha 224
+			if (ch == 224) continue;
+			switch (ch) {
+			case KEY_UP:
+				snake.nDirection = direction::UP;
+				break;
+			case KEY_DOWN:
+				snake.nDirection = direction::DOWN;
+				break;
+			case KEY_LEFT:
+				snake.nDirection = direction::LEFT;
+				break;
+			case KEY_RIGHT:
+				snake.nDirection = direction::RIGHT;
+				break;
+			default:
+				break;
+			}
 		}
 		snake.move();
-		std::this_thread::sleep_for(std::chrono::milliseconds(100));
+		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	}
 }
 }
-
-
-//NO_EXPORT DEFINITION inline direction checkDirection(const direction& _d) {
-//	switch (_d) {
-//	case direction::UP:
-//		return direction::DOWN;
-//	case direction::DOWN:
-//		return direction::UP;
-//	case direction::LEFT:
-//		return direction::RIGHT;
-//	case direction::RIGHT:
-//		return direction::LEFT;
-//	default:
-//		[[unlikely]]
-//		exit(INVALID_DIRECTION_INPUT);
-//	}
-//	[[unreachable]] exit(UNKNOWN_ERROR);
-//}

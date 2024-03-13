@@ -1,7 +1,6 @@
-#include "config.hpp"
+import "config.hpp";
 
 import ancillarycat.console;
-import ancillarycat.print;
 
 int main(int argc, char* argv[]) {
 	while (true)

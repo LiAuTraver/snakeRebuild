@@ -1,10 +1,9 @@
 module;
 
-#include "config.hpp"
+import "config.hpp";
 
 export module ancillarycat.panel;
 
-import ancillarycat.print;
 import ancillarycat.ansi;
 import ancillarycat.console;
 import std;
@@ -21,11 +20,11 @@ namespace panel
 {
 export void showMenu()
 {
-	consolePrint.moveCursor(3, 0);
+	console.moveCursor(3, 0);
 	std::ranges::for_each(SNAKE, [](const std::string& str) {
-		consolePrintln.centered(str);
+		console.centered(str);
 		});
-	consolePrintln
+	console
 		.moveCursor(3, 0)
 		.centered("Snake")
 		.moveCursor(1, 0)
@@ -37,6 +36,6 @@ export void showMenu()
 		.moveCursor(1, 0)
 		.centered("Press 'q' or 'Q' to exit", ansiColor::yellow)
 		.setStyle()
-		.getCursor();
+		.getCursorCoordinate();
 }
 }
