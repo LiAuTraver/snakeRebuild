@@ -1,9 +1,8 @@
 module;
 
-import "config.hpp";
-
 export module ancillarycat.panel;
 
+import "config.hpp";
 import ancillarycat.ansi;
 import ancillarycat.console;
 import std;

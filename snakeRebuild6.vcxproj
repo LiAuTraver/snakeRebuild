@@ -145,6 +145,7 @@
     <ClCompile Include="snakeRebuild.cpp" />
     <ClCompile Include="realMain.cpp" />
     <ClCompile Include="std.ixx" />
+    <ClCompile Include="ancillarycat.impl.console.ixx" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="config.hpp" />

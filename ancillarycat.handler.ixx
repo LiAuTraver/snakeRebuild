@@ -1,10 +1,5 @@
 module;
 
-
-#pragma warning (disable: 4706)
-#pragma warning (disable: 5030)
-#pragma warning (disable: 5222)
-
 #pragma comment(lib, "winmm.lib")
 
 export module ancillarycat.handler;
@@ -185,6 +180,4 @@ export inline int oninitialize() {
 	return handler::option();
 }
 } // namespace handler
-#pragma warning (default: 4706)
-#pragma warning (default: 5030)
-#pragma warning (default: 5222)
+

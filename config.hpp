@@ -1,5 +1,5 @@
 #pragma once
-
+#pragma warning(disable : 5030)
 // This file `config.hpp` has pre-defined macros and constants 
 //		that are used throughout the program.
 // If the file is included in a source file, 
@@ -8,6 +8,9 @@
 #ifdef _MSC_VER
 
 #include <yvals_core.h>
+#include <vcruntime.h>
+#include "limits.hpp"
+#include "core.hpp"
 
 #ifndef _WIN32
 #error ("This program is designed to run on Windows, please use a Windows machine.")
@@ -34,8 +37,5 @@
 #ifndef DEFINITION
 #define DEFINITION
 #endif
-
-import "limits.hpp";
-import "core.hpp";
 
 extern inline int realMain([[maybe_unused]] const int& argc, [[maybe_unused]] char* argv[]);
