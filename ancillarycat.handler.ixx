@@ -2,9 +2,10 @@ module;
 
 #pragma comment(lib, "winmm.lib")
 
+#include "config.hpp";
+
 export module ancillarycat.handler;
 
-import "config.hpp";
 import <csignal>;
 import <Windows.h>;
 import ancillarycat.console;
@@ -39,7 +40,7 @@ NO_EXPORT inline int showInvalidConsoleSize() {
 		.fillLine()
 		.setCursorCoordinate(console.cursorRow - 2, 0);
 
-	while (int ch = console.getch()) {
+	while (const int ch = console.getch()) {
 		switch (ch) {
 		case 'r':
 			[[fallthrough]];
@@ -53,7 +54,8 @@ NO_EXPORT inline int showInvalidConsoleSize() {
 			break;
 		}
 	}
-	[[unreachable]] return UNKNOWN_ERROR;
+	std::unreachable();
+	//return UNKNOWN_ERROR;
 }
 
 
@@ -101,25 +103,32 @@ export void signalHandler(const int signalNumber) {
 	{
 	case SIGINT:
 		handler::handleCBreak();
-		[[unreachable]] break;
+		std::unreachable();
+		break;
 	case SIGABRT:
 		// TODO: implement the handler for abort signal
-		[[unreachable]] break;
+		std::unreachable();
+		break;
 	case SIGFPE:
 		// TODO: implement the handler for 
-		[[unreachable]] break;
+		std::unreachable();
+		break;
 	case SIGILL:
 		// TODO
-		[[unreachable]] break;
+		std::unreachable();
+		break;
 	case SIGSEGV:
 		// TODO
-		[[unreachable]] break;
+		std::unreachable();
+		break;
 	case SIGTERM:
 		// TODO
-		[[unreachable]] break;
+		std::unreachable();
+		break;
 	case SIGBREAK:
 		// TODO
-		[[unreachable]] break;
+		std::unreachable();
+		break;
 	default: [[unlikely]]
 			   // TODO
 			   break;
@@ -148,20 +157,19 @@ NO_EXPORT int option() {
 			[[fallthrough]];
 		case 'Q':
 			return EXIT_PROGRAM;
-			[[unreachable]]
-			break;
+			//std::unreachable();
 		case 'r':
 			[[fallthrough]];
 		case 'R':
 			return RESTART_PROGRAM;
-			[[unreachable]]
-			break;
+			//std::unreachable();
 		default:
 			defaultHandler();
 			break;
 		}
 	}
-	[[unreachable]] return UNKNOWN_ERROR;
+	std::unreachable();
+	//return UNKNOWN_ERROR;
 }
 
 export inline int oninitialize() {

@@ -1,6 +1,6 @@
 module;
+#include "config.hpp";
 export module ancillarycat.impl.console;
-import "config.hpp";
 import <Windows.h>;
 import <conio.h>;
 import ancillarycat.ansi;
@@ -8,7 +8,7 @@ import ancillarycat.console;
 import std;
 
 
-Console::Console() : cursorRow(0), cursorCol(0), cursorCoordinate({ 0,0 })
+Console::Console() : cursorCoordinate({ 0,0 }), cursorRow(0), cursorCol(0)
 {
 	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &consoleScreenBufferInfo_);
 	handleStdin_ = GetStdHandle(STD_INPUT_HANDLE);  // Get the standard input handle
@@ -70,7 +70,7 @@ Console& Console::setAnsi(const WORD attribute) noexcept
 	return *this;
 }
 // console interaction
-const int Console::getch(const bool& needRealKey) noexcept {
+int Console::getch(const bool& needRealKey) noexcept {
 	return needRealKey ? _kbhit() : _getch();
 }
 Console& Console::box(const SHORT& curRow, const SHORT& curCol, SHORT boxHeight, SHORT boxWidth, const char& border, const char& horizontal, const char& vertical)
@@ -118,7 +118,7 @@ Console& Console::println(std::string_view str, const ansiColor& color, const an
 }
 Console& Console::centered(const std::string_view str, const ansiColor& color, const ansiBackground& background, const bool& newline) noexcept
 {
-	short padding = (width - str.length()) / 2;
+	short padding = static_cast<short>((width - str.length()) / 2);
 	padding < 0 ? padding = 0 : padding;
 	std::print("\033[K ");
 	this->moveCursor(0, padding);
@@ -129,7 +129,7 @@ Console& Console::centered(const std::string_view str, const ansiColor& color, c
 
 Console& Console::rightAligned(const std::string_view str, const ansiColor& color, const ansiBackground& background, const bool& newline) noexcept
 {
-	short padding = width - str.length();
+	short padding = static_cast<short>(width - str.length());
 	padding < 0 ? padding = 0 : padding;
 	this->moveCursor(0, padding);
 	std::print("\033[{};{}m{}\033[{}m", static_cast<int>(background), static_cast<int>(color), str, static_cast<int>(ansiStyle::reset));
@@ -173,12 +173,12 @@ Console& Console::return_impl(const SHORT& row, const SHORT& col, const std::str
 	// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ get back to the original cursor position
 }
 
-Console& Console::return_impl_ln(const SHORT& row,const std::string_view str, const ansiColor& color, const ansiBackground& background) noexcept
+Console& Console::return_impl_ln(const SHORT& row, const std::string_view str, const ansiColor& color, const ansiBackground& background) noexcept
 {
 	const SHORT preY = cursorCoordinate.Y;
 	const SHORT preX = cursorCoordinate.X;
-	return this->setCursorCoordinate(row,0)
-		.centered(str, color, background,false)
+	return this->setCursorCoordinate(row, 0)
+		.centered(str, color, background, false)
 		.setCursorCoordinate(preY, preX);
 	// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ get back to the original cursor position
 }

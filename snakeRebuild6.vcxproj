@@ -111,6 +111,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <DisableSpecificWarnings>4067;5057</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -137,6 +138,9 @@
     <ClCompile Include="ancillarycat.ansi.ixx" />
     <ClCompile Include="ancillarycat.config.ixx" />
     <ClCompile Include="ancillarycat.console.ixx" />
+    <ClCompile Include="ancillarycat.entity.ixx" />
+    <ClCompile Include="ancillarycat.generator.ixx" />
+    <ClCompile Include="ancillarycat.impl.entity.ixx" />
     <ClCompile Include="ancillarycat.handler.ixx" />
     <ClCompile Include="ancillarycat.leaderboard.ixx" />
     <ClCompile Include="ancillarycat.panel.ixx" />

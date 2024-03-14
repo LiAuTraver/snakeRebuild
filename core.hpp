@@ -35,3 +35,10 @@ constexpr inline short TIMER_ROW = 14; // later specified
 constexpr inline short TIMER_COL = 65;// later specified
 constexpr inline short TIMER_HEIGHT = 3; // timer height, plus the border
 constexpr inline short TIMER_WIDTH = 20; // timer width, plus the border
+enum class direction : int {
+	NO_DIRECTION = 0,
+	UP,
+	DOWN,
+	LEFT,
+	RIGHT
+};

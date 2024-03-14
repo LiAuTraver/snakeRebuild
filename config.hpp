@@ -1,5 +1,5 @@
 #pragma once
-#pragma warning(disable : 5030)
+
 // This file `config.hpp` has pre-defined macros and constants 
 //		that are used throughout the program.
 // If the file is included in a source file, 

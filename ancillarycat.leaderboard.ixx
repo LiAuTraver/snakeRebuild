@@ -1,7 +1,7 @@
 module;
+#include "config.hpp";
 export module ancillarycat.leaderboard;
 
-import "config.hpp";
 import std;
 import ancillarycat.console;
 import ancillarycat.ansi;
@@ -44,11 +44,11 @@ DEFINITION inline const std::chrono::seconds timer(const std::chrono::millisecon
 	return std::chrono::duration_cast<std::chrono::seconds>(elapsed);
 }
 
-DEFINITION inline void writeDown(const std::string_view name, const short& score, const long double& time, const std::chrono::seconds& elapsed)
+DEFINITION inline void writeDown(const std::string_view name, const short& score, const long double& time, const std::chrono::seconds& gameTime)
 {
 	if (writeAccess) {
 		std::ofstream file("leaderboard.snake", std::ios::app);
-		file << name << " " << score << " " << time << " " << elapsed.count() << std::endl;
+		file << name << " " << score << " " << time << " " << gameTime.count() << std::endl;
 		file.close();
 	}
 	// TODO: to be polished

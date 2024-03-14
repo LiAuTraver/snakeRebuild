@@ -51,6 +51,15 @@
     <ClCompile Include="ancillarycat.impl.console.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ancillarycat.impl.entity.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ancillarycat.entity.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ancillarycat.generator.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="config.hpp">

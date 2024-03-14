@@ -1,8 +1,6 @@
 module;
-
+#include "config.hpp";
 export module ancillarycat.console;
-
-import "config.hpp";
 import <windows.h>;
 import ancillarycat.ansi;
 import std;
@@ -16,7 +14,7 @@ public:
 	Console& moveCursor(const SHORT deltaRow = 0, const SHORT deltaCol = 0);
 	Console& resetAnsi() noexcept;
 	Console& setAnsi(const WORD attribute) noexcept;
-	static const int getch(const bool& needRealKey = false) noexcept;
+	static int getch(const bool& needRealKey = false) noexcept;
 	Console& box(const SHORT& curRow = 0, const SHORT& curCol = 0, SHORT boxHeight = DEFAULT_VAL, SHORT boxWidth = DEFAULT_VAL, const char& border = '+', const char& horizontal = '-', const char& vertical = '|');
 	Console& terminalSizeChange();
 	Console& print(std::string_view str, const ansiColor& color = ansiColor::white, const ansiBackground& background = ansiBackground::reset) noexcept;
@@ -41,7 +39,7 @@ public:
 	}
 	Console& printAndReturn(const SHORT& row, const SHORT& col, const std::string_view str, const ansiColor& color = ansiColor::white, const ansiBackground& background = ansiBackground::reset) noexcept
 	{
-		return this->return_impl_ln(row,str, color, background);
+		return this->return_impl(row, col, str, color, background);
 	}
 	Console& top(const std::string_view str, const ansiColor& color = ansiColor::white, const ansiBackground& background = ansiBackground::reset) noexcept {
 		return this->centeredAndReturn(0, str, color, background);
@@ -52,7 +50,7 @@ public:
 
 private:
 	Console& return_impl(const SHORT& row, const SHORT& col, const std::string_view str, const ansiColor& color, const ansiBackground& background) noexcept;
-	Console& return_impl_ln(const SHORT& row,const std::string_view str, const ansiColor& color, const ansiBackground& background) noexcept;
+	Console& return_impl_ln(const SHORT& row, const std::string_view str, const ansiColor& color, const ansiBackground& background) noexcept;
 public:
 	SHORT width;
 	SHORT height;
