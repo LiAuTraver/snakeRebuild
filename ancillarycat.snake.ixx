@@ -8,40 +8,19 @@ import ancillarycat.windows.api;
 import ancillarycat.leaderboard;
 import ancillarycat.generator;
 import ancillarycat.entity;
+import ancillarycat.ansi;
 import std;
 #pragma region export
-enum class direction;
-export class Generator;
-export class Entity;
 export class Food;
 export class Snake;
 export class Node;
-export template <class _MyBase, class _MyDerived> bool instanceof(_MyBase*);
-NO_EXPORT int checkInvalidPosition(Entity&, Entity&);
-NO_EXPORT int checkSnakeFood(const Snake&, const Food&);
-NO_EXPORT int checkOutofBound(const Entity&);
 constinit int time = 0; // for debugging
-namespace game
-{
-NO_EXPORT void clock(const std::chrono::seconds&, const int&, const int&);
-NO_EXPORT int gameOver();
-NO_EXPORT void gameInit();
-export int snakeGame();
-}
+export int checkInvalidPosition(Entity&, Entity&);
+export int checkSnakeFood(const Snake&, const Food&);
+export int checkOutofBound(const Entity&);
 #pragma endregion
 
 // definition goes below.
-/*
-* @brief check whether the base pointer is an instance of the derived class
-* @param base the base pointer
-* @return true if the base pointer is an instance of the derived class, otherwise false
-* @note this can be viewed as the keyword `instanceof` in Java
-*/
-template <class _MyBase, class _MyDerived>
-	requires std::is_base_of_v<_MyBase, _MyDerived>
-bool instanceof(_MyBase* base) {
-	return dynamic_cast<_MyDerived*>(base) != nullptr;
-}
 
 class Food final : public Entity {
 public:
@@ -179,13 +158,7 @@ public:
 	//inline Snake& changeDirection(const direction& _d) noexcept;
 };
 
-
-//NO_EXPORT DEFINITION template <typename _It>
-//	requires std::bidirectional_iterator<_It>
-//Node& prevNode(_It it) {
-//	return *std::prev(it);
-//}
-NO_EXPORT DEFINITION inline int checkOutofBound(const Entity& entity) {
+DEFINITION int checkOutofBound(const Entity& entity) {
 	// as for snake, I think only to check the head is enough
 	if (entity.y < START_ROW + 1 ||
 		entity.y > START_ROW + BOX_HEIGHT - 1 ||
@@ -195,18 +168,17 @@ NO_EXPORT DEFINITION inline int checkOutofBound(const Entity& entity) {
 	}
 	return VALID;
 }
-NO_EXPORT DEFINITION int checkSnakeFood(const Snake& snake, const Food& food) {
+DEFINITION int checkSnakeFood(const Snake& snake, const Food& food) {
 	if (snake.y == food.y && snake.x == food.x) {
 		// TODO: implement the snake body check
 		return INVALID;
 	}
 	return VALID;
 }
-
 // we can use 'static_cast' when we have the guarantee that the cast is safe and valid,
 //			otherwise, it may lead to undefined behavior.
 // In that case, we should use 'dynamic_cast' instead.
-NO_EXPORT DEFINITION int checkInvalidPosition(Entity& entity1, Entity& entity2) {
+DEFINITION int checkInvalidPosition(Entity& entity1, Entity& entity2) {
 	if (entity1.y == entity2.y && entity1.x == entity2.x) {
 		return INVALID;
 	}
@@ -217,113 +189,4 @@ NO_EXPORT DEFINITION int checkInvalidPosition(Entity& entity1, Entity& entity2) 
 		return checkSnakeFood(static_cast<Snake&>(entity2), static_cast<Food&>(entity1));
 	}
 	return VALID;
-}
-
-namespace game
-{
-NO_EXPORT DEFINITION void clock(const std::chrono::seconds& cur, const int& row = TIMER_ROW, const int& col = TIMER_COL) {
-	console
-		.printAndReturn(TIMER_ROW, TIMER_COL, std::to_string(cur.count()));
-}
-NO_EXPORT DEFINITION int gameOver() {
-	api::soundEvent(L"\\Media\\Windows Critical Stop.wav");
-	console
-		.bot("Game Over!", ansiColor::red, ansiBackground::black)
-		.centeredAndReturn(console.height - 2, "Press Enter to return to menu", ansiColor::white, ansiBackground::black);
-	game::elapsed = std::chrono::milliseconds(0);
-	console.setCursorCoordinate(0, 0);
-	std::cin.get();
-	system("CLS");
-	return GAMEOVER;
-}
-NO_EXPORT DEFINITION void gameInit() {
-	system("CLS");
-	console.box(START_ROW, START_COL, BOX_HEIGHT, BOX_WIDTH)
-		.box(TIMER_ROW, TIMER_COL, TIMER_HEIGHT, TIMER_WIDTH);
-	api::soundEvent(L"\\Media\\Ring01.wav");
-	for (int i = 0; i < 3; i++) {
-		console.bot("Game will start in " + std::to_string(3 - i) + " seconds", ansiColor::green, ansiBackground::black);
-		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-	}
-	console.bot("Game Start!", ansiColor::green, ansiBackground::black);
-}
-DEFINITION int snakeGame() {
-	Snake snake('@');
-	Food food('$');
-	game::gameInit();
-	bool isIgnore = false;
-	int prevKey = -2;
-	while (true) {
-		if (console.getch(true)) {
-			const int ch = console.getch();
-			// alpha 224
-			if (ch == 224 || ch == prevKey) continue;
-			prevKey = ch;
-			switch (ch) {
-			case KEY_UP:
-				if (snake.nDirection == direction::DOWN || snake.nDirection == direction::UP) {
-					// ignore the key
-					isIgnore = true;
-					break;
-				}
-				snake.nDirection = direction::UP;
-				break;
-			case KEY_DOWN:
-				if (snake.nDirection == direction::UP || snake.nDirection == direction::DOWN) {
-					// ignore the key
-					isIgnore = true;
-					break;
-				}
-				snake.nDirection = direction::DOWN;
-				break;
-			case KEY_LEFT:
-				if (snake.nDirection == direction::RIGHT || snake.nDirection == direction::LEFT) {
-					// ignore the key
-					isIgnore = true;
-					break;
-				}
-				snake.nDirection = direction::LEFT;
-				break;
-			case KEY_RIGHT:
-				if (snake.nDirection == direction::LEFT || snake.nDirection == direction::RIGHT) {
-					// ignore the key
-					isIgnore = true;
-					break;
-				}
-				snake.nDirection = direction::RIGHT;
-				break;
-			default:
-				isIgnore = true;
-				break;
-			}
-		}
-		snake.move();
-		food.show();
-		if (checkOutofBound(snake) == INVALID) {
-			return gameOver();
-		}
-		if (checkInvalidPosition(snake, food) == INVALID)
-		{
-			food.regenerate().show();
-			// TODO: implement the `grow` function
-			if(snake.grow() == INVALID)
-			{
-				return gameOver();
-			}
-			api::soundEvent(L"\\Media\\Windows Proximity Notification.wav");
-		}
-		if (snake.check() == INVALID)
-		{
-			return gameOver();
-		}
-		if (isIgnore) {
-			isIgnore = false;
-		}
-		else
-		{
-			game::timer();
-		}
-	}
-	std::unreachable();
-}
 }

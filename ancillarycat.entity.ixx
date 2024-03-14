@@ -2,14 +2,20 @@ module;
 #include "config.hpp"
 export module ancillarycat.entity;
 import ancillarycat.console;
-import ancillarycat.ansi;
 import std;
+
+export template <class _MyBase, class _MyDerived>
+    requires std::is_base_of_v<_MyBase, _MyDerived>
+bool instanceof(_MyBase* base) {
+    return dynamic_cast<_MyDerived*>(base) != nullptr;
+}
+
 // ReSharper disable once CppClassCanBeFinal
 export class Entity
 {
 #pragma region my best friends
-	friend int checkInvalidPosition(Entity&, Entity&);
-	friend int checkOutofBound(const Entity&);
+	//friend int checkInvalidPosition(Entity&, Entity&);
+	//friend int checkOutofBound(const Entity&);
 #pragma endregion
 #pragma region Constructor
 public:

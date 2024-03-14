@@ -60,6 +60,9 @@
     <ClCompile Include="ancillarycat.generator.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ancilarycat.game.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="config.hpp">

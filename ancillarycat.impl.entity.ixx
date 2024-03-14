@@ -6,6 +6,13 @@ import ancillarycat.console;
 import ancillarycat.generator;
 import std;
 
+/*
+* @brief check whether the base pointer is an instance of the derived class
+* @param base the base pointer
+* @return true if the base pointer is an instance of the derived class, otherwise false
+* @note this can be viewed as the keyword `instanceof` in Java
+*/
+
 
 Entity::Entity() : y(0), x(0), c(' '), nDirection(direction::NO_DIRECTION), speed(0) { count++; }
 Entity::Entity(const Entity& entity) : y(entity.y), x(entity.x), c(entity.c), nDirection(entity.nDirection), speed(entity.speed) { count++; }

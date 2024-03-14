@@ -9,7 +9,7 @@ export module ancillarycat.handler;
 import <csignal>;
 import <Windows.h>;
 import ancillarycat.console;
-import ancillarycat.snake;
+import ancillarycat.game;
 import ancillarycat.leaderboard;
 import ancillarycat.config;
 import ancillarycat.ansi;
@@ -103,31 +103,31 @@ export void signalHandler(const int signalNumber) {
 	{
 	case SIGINT:
 		handler::handleCBreak();
-		std::unreachable();
+		//std::unreachable();
 		break;
 	case SIGABRT:
 		// TODO: implement the handler for abort signal
-		std::unreachable();
+		//std::unreachable();
 		break;
 	case SIGFPE:
 		// TODO: implement the handler for 
-		std::unreachable();
+		//std::unreachable();
 		break;
 	case SIGILL:
 		// TODO
-		std::unreachable();
+		//std::unreachable();
 		break;
 	case SIGSEGV:
 		// TODO
-		std::unreachable();
+		//std::unreachable();
 		break;
 	case SIGTERM:
 		// TODO
-		std::unreachable();
+		//std::unreachable();
 		break;
 	case SIGBREAK:
 		// TODO
-		std::unreachable();
+		//std::unreachable();
 		break;
 	default: [[unlikely]]
 			   // TODO
