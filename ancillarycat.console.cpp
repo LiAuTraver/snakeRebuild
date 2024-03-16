@@ -3,7 +3,7 @@ module;
 #include "config.hpp"
 #include <conio.h>
 module ancillarycat.console;
-import ancillarycat.ansi;
+import ancillarycat.api;
 import std;
 
 Console::Console() : cursorCoordinate({ 0,0 }), cursorRow(0), cursorCol(0)

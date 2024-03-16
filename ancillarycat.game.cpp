@@ -3,6 +3,7 @@ module;
 #include "core.hpp"
 #include <Windows.h>
 module ancillarycat.game;
+import ancillarycat.utils;
 
 namespace game
 {

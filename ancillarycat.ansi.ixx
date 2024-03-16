@@ -1,5 +1,5 @@
 module;
-export module ancillarycat.ansi;
+export module ancillarycat.api:ansi;
 
 export enum class ansiColor : int {
 	reset = 0,

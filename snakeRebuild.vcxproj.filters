@@ -30,9 +30,6 @@
     <ClCompile Include="ancillarycat.panel.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ancillarycat.ansi.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ancillarycat.snake.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -49,9 +46,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ancillarycat.console.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ancillarycat.entity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ancillarycat.entity.ixx">
@@ -73,6 +67,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ancillarycat.game.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ancillarycat.entity.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ancillarycat.ansi.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ancillarycat.api.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

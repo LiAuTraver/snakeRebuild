@@ -2,9 +2,15 @@ module;
 #include "config.hpp"
 #undef NODISCARD
 #define NODISCARD [[nodiscard]]
-export module ancillarycat.generator;
+export module ancillarycat.api:generator;
 import std;
-
+export enum class direction : int {
+	NO_DIRECTION = 0,
+	UP,
+	DOWN,
+	LEFT,
+	RIGHT
+};
 export class Generator {
 public:
 	NODISCARD static direction direct() noexcept

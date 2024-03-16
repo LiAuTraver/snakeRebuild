@@ -37,10 +37,3 @@ constinit inline short INFO_ROW = 14; // later specified
 constinit inline short INFO_COL = 65;// later specified
 constinit inline short INFO_HEIGHT = 3; // timer height, plus the border
 constinit inline short INFO_WIDTH = 30; // timer width, plus the border
-enum class direction : int {
-	NO_DIRECTION = 0,
-	UP,
-	DOWN,
-	LEFT,
-	RIGHT
-};

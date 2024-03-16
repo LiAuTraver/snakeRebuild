@@ -2,8 +2,11 @@ module;
 #include "config.hpp"
 module ancillarycat.entities:entity;
 import ancillarycat.console;
-import ancillarycat.generator;
+import ancillarycat.api;
 import std;
+
+//  due to the intellisense bug, the class definition below could not be recognized, so I temporarily use preprocessor directives.
+#ifndef module_bug
 Entity::Entity() : y(0), x(0), c(' '), nDirection(direction::NO_DIRECTION), speed(0) { count++; }
 Entity::Entity(const Entity& entity) : y(entity.y), x(entity.x), c(entity.c), nDirection(entity.nDirection), speed(entity.speed) { count++; }
 //Entity::Entity(Entity&& entity) noexcept : y(entity.y), x(entity.x), c(entity.c), nDirection(entity.nDirection), speed(entity.speed) {
@@ -97,5 +100,6 @@ Entity& Entity::erase(const char& delimiter) noexcept
 	std::print("{}",delimiter);
 	return *this;
 }
+#endif
 
 

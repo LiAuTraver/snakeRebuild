@@ -1,14 +1,12 @@
 module;
 #include "config.hpp"
-#include <Windows.h>
 export module ancillarycat.game;
 import std;
-import ancillarycat.ansi;
+import ancillarycat.api;
 import ancillarycat.config;
 import ancillarycat.console;
 import ancillarycat.entities;
 import ancillarycat.leaderboard;
-import ancillarycat.windows.api;
 import ancillarycat.utils;
 
 export namespace game

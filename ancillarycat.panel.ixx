@@ -2,7 +2,7 @@ module;
 #include "config.hpp"
 export module ancillarycat.panel;
 
-import ancillarycat.ansi;
+import ancillarycat.api;
 import ancillarycat.console;
 import std;
 

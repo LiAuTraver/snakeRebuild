@@ -2,9 +2,13 @@ module;
 #include "config.hpp"
 export module ancillarycat.utils;
 import ancillarycat.entities;
+import std;
 export int checkInvalidPosition(Entity&, Entity&);
 export int checkSnakeFood(const Snake&, const Food&);
 export int checkOutofBound(const Entity&);
+export template <class _MyBase, class _MyDerived>
+	requires std::is_base_of_v<_MyBase, _MyDerived>
+bool instanceof(_MyBase*);
 
 int checkOutofBound(const Entity& entity) {
 	// as for snake, I think only to check the head is enough
@@ -16,6 +20,7 @@ int checkOutofBound(const Entity& entity) {
 	}
 	return VALID;
 }
+
 int checkSnakeFood(const Snake& snake, const Food& food) {
 	if (snake.y == food.y && snake.x == food.x) {
 		// TODO: implement the snake body check
@@ -23,6 +28,7 @@ int checkSnakeFood(const Snake& snake, const Food& food) {
 	}
 	return VALID;
 }
+
 int checkInvalidPosition(Entity& entity1, Entity& entity2) {
 	// we can use 'static_cast' when we have the guarantee that the cast is safe and valid,
 	//			otherwise, it may lead to undefined behavior.
@@ -37,4 +43,16 @@ int checkInvalidPosition(Entity& entity1, Entity& entity2) {
 		return checkSnakeFood(static_cast<Snake&>(entity2), static_cast<Food&>(entity1));
 	}
 	return VALID;
+}
+
+/*
+* @brief check whether the base pointer is an instance of the derived class
+* @param base the base pointer
+* @return true if the base pointer is an instance of the derived class, otherwise false
+* @note this can be viewed as the keyword `instanceof` in Java
+*/
+template <class _MyBase, class _MyDerived>
+	requires std::is_base_of_v<_MyBase, _MyDerived>
+bool instanceof(_MyBase* base) {
+	return dynamic_cast<_MyDerived*>(base) != nullptr;
 }

@@ -5,8 +5,7 @@ export module ancillarycat.leaderboard;
 
 import std;
 import ancillarycat.console;
-import ancillarycat.ansi;
-import ancillarycat.windows.api;
+import ancillarycat.api;
 
 namespace game
 {

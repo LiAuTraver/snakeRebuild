@@ -8,8 +8,7 @@ import ancillarycat.console;
 import ancillarycat.game;
 import ancillarycat.leaderboard;
 import ancillarycat.config;
-import ancillarycat.ansi;
-import ancillarycat.windows.api;
+import ancillarycat.api;
 import ancillarycat.panel;
 import std;
 

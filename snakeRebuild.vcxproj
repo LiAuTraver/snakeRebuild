@@ -107,7 +107,7 @@
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);my_module</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);module_bug</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
@@ -135,16 +135,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ancillarycat.ansi.ixx" />
+    <ClCompile Include="ancillarycat.api.ixx" />
+    <ClCompile Include="ancillarycat.entity.cpp" />
     <ClCompile Include="ancillarycat.food.ixx" />
     <ClCompile Include="ancillarycat.game.cpp" />
     <ClCompile Include="ancillarycat.game.ixx" />
-    <ClCompile Include="ancillarycat.ansi.ixx" />
     <ClCompile Include="ancillarycat.config.ixx" />
     <ClCompile Include="ancillarycat.console.ixx" />
     <ClCompile Include="ancillarycat.entities.ixx" />
     <ClCompile Include="ancillarycat.entity.ixx" />
     <ClCompile Include="ancillarycat.generator.ixx" />
-    <ClCompile Include="ancillarycat.entity.cpp" />
     <ClCompile Include="ancillarycat.handler.ixx" />
     <ClCompile Include="ancillarycat.leaderboard.ixx" />
     <ClCompile Include="ancillarycat.panel.ixx" />

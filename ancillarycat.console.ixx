@@ -3,7 +3,7 @@ module;
 #include <Windows.h>
 export module ancillarycat.console;
 import std;
-import ancillarycat.ansi;
+import ancillarycat.api;
 export class Console;
 class Console final {
 public:
