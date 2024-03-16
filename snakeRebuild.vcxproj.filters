@@ -95,5 +95,8 @@
     <ClCompile Include="module\std.ixx">
       <Filter>Resource Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\ancillarycat.utils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

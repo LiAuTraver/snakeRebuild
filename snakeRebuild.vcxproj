@@ -164,6 +164,7 @@
     <ClCompile Include="src\ancillarycat.console.cpp" />
     <ClCompile Include="src\ancillarycat.entity.cpp" />
     <ClCompile Include="src\ancillarycat.game.cpp" />
+    <ClCompile Include="src\ancillarycat.utils.cpp" />
     <ClCompile Include="src\realMain.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

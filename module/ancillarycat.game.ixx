@@ -11,10 +11,9 @@ import ancillarycat.utils;
 
 export namespace game
 {
-void time_logger(const std::chrono::seconds&, const int&, const int&);
 int gameOver();
 void gameInit();
 int snakeGame();
 void score_logger(const short&);
-void time_logger(const std::chrono::seconds& cur, const int& row = INFO_ROW, const int& col = INFO_COL);
+void time_logger(const std::chrono::seconds& cur, const short& row = INFO_ROW, const short& col = INFO_COL);
 }

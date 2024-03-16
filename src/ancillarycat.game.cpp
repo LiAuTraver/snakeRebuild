@@ -9,18 +9,18 @@ namespace game
 void score_logger(const short& score)
 {
 	const std::string current_score = "Score: " + std::to_string(score);
-	const short len = (INFO_WIDTH - current_score.length()) / 2 + INFO_COL;
+	const short len = static_cast<short>((INFO_WIDTH - current_score.length()) / 2 + INFO_COL);
 	console
 		.setStyle(ansiStyle::blink)
 		.shuttle(INFO_ROW + 1, len, current_score, ansiColor::redIntense);
 }
 
-void time_logger(const std::chrono::seconds& cur, const int& row, const int& col) {
+void time_logger(const std::chrono::seconds& cur, const short& row, const short& col) {
 	const std::string elapsed = "Time: " + std::to_string(cur.count()) + "s";
-	const short len = (INFO_WIDTH - elapsed.length()) / 2 + INFO_COL;
+	const short len = static_cast<short>((INFO_WIDTH - elapsed.length()) / 2 + col);
 	console
 		.setStyle(ansiStyle::blink)
-		.shuttle(INFO_ROW, len, elapsed, ansiColor::white);
+		.shuttle(row, len, elapsed, ansiColor::white);
 }
 int gameOver() {
 	api::soundEvent(L"\\Media\\Windows Critical Stop.wav", soundFlag::async, soundFlag::async);
