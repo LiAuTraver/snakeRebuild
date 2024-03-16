@@ -1,5 +1,5 @@
 module;
-#include "core.hpp"
+#include "../include/config.hpp"
 export module ancillarycat.entities:food;
 import :entity;
 export class Food;

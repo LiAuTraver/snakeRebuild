@@ -1,5 +1,5 @@
 module;
-#include "config.hpp"
+#include "../include/config.hpp"
 export module ancillarycat.panel;
 
 import ancillarycat.api;

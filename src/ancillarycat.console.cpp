@@ -1,6 +1,6 @@
 module;
 #include <Windows.h>
-#include "config.hpp"
+#include "../include/config.hpp"
 #include <conio.h>
 module ancillarycat.console;
 import ancillarycat.api;

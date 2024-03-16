@@ -20,38 +20,38 @@ add_library(std.compat
         std.compat.ixx
 )
 add_library(ancillarycat.console
-        ancillarycat.console.cpp
-        ancillarycat.console.ixx
+        "src/ancillarycat.console.cpp"
+        "module/ancillarycat.console.ixx"
 )
 add_library(ancillarycat.ansi
-        ancillarycat.ansi.ixx
+        "module/ancillarycat.ansi.ixx"
 )
 add_library(ancillarycat.handler
-        ancillarycat.handler.ixx
+        "module/ancillarycat.handler.ixx"
 )
 add_library(ancillarycat.windows.api
         ancillarycat.windows.api.ixx
 )
 add_library(ancillarycat.entities
-        ancillarycat.entities.ixx
-        ancillarycat.entity.ixx
-        ancillarycat.entity.cpp
-        ancillarycat.snake.ixx
+        "module/ancillarycat.entities.ixx"
+        "module/ancillarycat.entity.ixx"
+        "src/ancillarycat.entity.cpp"
+        "module/ancillarycat.snake.ixx"
 )
 add_library(ancillarycat.config
-        ancillarycat.config.ixx
+        "module/ancillarycat.config.ixx"
 )
 add_library(ancillarycat.leaderboard
-        ancillarycat.leaderboard.ixx
+        "module/ancillarycat.leaderboard.ixx"
 )
 add_library(ancillarycat.generator
-        ancillarycat.generator.ixx
+        "module/ancillarycat.generator.ixx"
 )
 add_library(ancillarycat.panel
-        ancillarycat.panel.ixx
+        "module/ancillarycat.panel.ixx"
 )
 add_library(ancillarycat.game
-        ancillarycat.game.ixx
+        "module/ancillarycat.game.ixx"
 )
 
 # Specify the sources for your library

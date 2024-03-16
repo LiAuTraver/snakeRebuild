@@ -1,6 +1,5 @@
 module;
-#include "config.hpp"
-#include "core.hpp"
+#include "../include/config.hpp"
 #include <Windows.h>
 module ancillarycat.game;
 import ancillarycat.utils;
@@ -31,7 +30,7 @@ int gameOver() {
 	console.setCursorCoordinate(0, 0);
 	std::cin.get();
 	system("CLS");
-	game::elapsed = std::chrono::milliseconds(0);
+	utils::elapsed = std::chrono::milliseconds(0);
 	return GAMEOVER;
 }
 NO_EXPORT std::mutex consoleMutex;
@@ -110,13 +109,13 @@ int snakeGame() {
 			}
 		}
 		snake.move(1, 'o');
-		if (checkOutofBound(snake) == INVALID) {
+		if (utils::checkOutofBound(snake) == INVALID) {
 			return gameOver();
 		}
-		if (checkInvalidPosition(snake, food) == INVALID)
+		if (utils::checkInvalidPosition(snake, food) == INVALID)
 		{
 			food.regenerate().show();
-			if (checkInvalidPosition(snake.grow(),snake.nodes.back()) == INVALID)
+			if (utils::checkInvalidPosition(snake.grow(),snake.nodes.back()) == INVALID)
 			{
 				return gameOver();
 			}
@@ -132,7 +131,7 @@ int snakeGame() {
 		}
 		else
 		{
-			game::time_logger(game::timer());
+			game::time_logger(utils::timer());
 			game::score_logger(snake.score);
 		}
 	}

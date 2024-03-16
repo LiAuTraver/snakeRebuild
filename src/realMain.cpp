@@ -1,4 +1,4 @@
-#include "config.hpp"
+#include "../include/config.hpp"
 
 import ancillarycat.handler;
 

@@ -1,12 +1,72 @@
 module;
-#include "config.hpp"
-module ancillarycat.entities:entity;
+#include "../include/config.hpp"
+export module ancillarycat.entities:entity;
 import ancillarycat.console;
 import ancillarycat.api;
 import std;
+export class Entity
+{
+#pragma region my best friends
+	//friend int checkInvalidPosition(Entity&, Entity&);
+	//friend int checkOutofBound(const Entity&);
+#pragma endregion
+#pragma region Constructor
+public:
+	explicit Entity();
+	explicit Entity(const Entity& entity);
+	//explicit Entity(Entity&& entity) noexcept;
+	explicit Entity(const int& generateTag, const char& _c);
+	explicit Entity(const short& _y, const short& _x);
+	explicit Entity(const short& _y, const short& _x, const char& _c);
+	explicit Entity(const short& _y, const short& _x, const char& _c, const direction& _d);
+	virtual ~Entity() = default;
+#pragma endregion
+#pragma region 'get' Function
+public:
+	[[nodiscard]] virtual constexpr char getChar() const noexcept final {
+		return c;
+	}
+	[[nodiscard]] virtual constexpr short getY() const noexcept final {
+		return y;
+	}
+	[[nodiscard]] virtual constexpr short getX() const noexcept final {
+		return x;
+	}
+	[[nodiscard]] virtual constexpr direction getDirection() const noexcept final {
+		return nDirection;
+	}
+	[[nodiscard]] virtual constexpr double getSpeed() const noexcept final {
+		return speed;
+	}
+#pragma endregion
+#pragma region Function
+public:
+	virtual Entity& show() noexcept;
+	virtual Entity& regenerate() noexcept;
+	virtual Entity& disappear() noexcept;
+	virtual Entity& move(const short& offset = 1,const char& delimiter = ' ') noexcept;
+#pragma endregion
+#pragma region impl Function
+protected:
+	Entity& to_impl(const short& _y,const short& _x) noexcept;
+	Entity& erase(const char& delimiter = ' ') noexcept;
+#pragma endregion
+#pragma region Member Variables
+public:
+	// I think it's ok to make the member variable public
+	short y;
+	short x;
+	char c;
+	direction nDirection;
+	double speed;
+	static unsigned short count;
+#pragma endregion
+};
+export unsigned short Entity::count = 0;
 
-//  due to the intellisense bug, the class definition below could not be recognized, so I temporarily use preprocessor directives.
-#ifndef module_bug
+// due to the bug of the module, I have to put the implementation here. see the corresponding cpp file for more details.
+#ifdef module_bug
+import ancillarycat.api;
 Entity::Entity() : y(0), x(0), c(' '), nDirection(direction::NO_DIRECTION), speed(0) { count++; }
 Entity::Entity(const Entity& entity) : y(entity.y), x(entity.x), c(entity.c), nDirection(entity.nDirection), speed(entity.speed) { count++; }
 //Entity::Entity(Entity&& entity) noexcept : y(entity.y), x(entity.x), c(entity.c), nDirection(entity.nDirection), speed(entity.speed) {
@@ -101,5 +161,3 @@ Entity& Entity::erase(const char& delimiter) noexcept
 	return *this;
 }
 #endif
-
-

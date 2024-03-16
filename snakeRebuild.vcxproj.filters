@@ -15,82 +15,85 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <None Include="cpp.hint" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\config.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\core.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\limits.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\ancillarycat.console.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ancillarycat.entity.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ancillarycat.game.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\realMain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="snakeRebuild.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="std.ixx">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="module\ancillarycat.ansi.ixx">
+      <Filter>Resource Files</Filter>
     </ClCompile>
-    <ClCompile Include="ancillarycat.console.ixx">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="module\ancillarycat.api.ixx">
+      <Filter>Resource Files</Filter>
     </ClCompile>
-    <ClCompile Include="ancillarycat.handler.ixx">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="module\ancillarycat.config.ixx">
+      <Filter>Resource Files</Filter>
     </ClCompile>
-    <ClCompile Include="ancillarycat.panel.ixx">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="module\ancillarycat.console.ixx">
+      <Filter>Resource Files</Filter>
     </ClCompile>
-    <ClCompile Include="ancillarycat.snake.ixx">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="module\ancillarycat.entities.ixx">
+      <Filter>Resource Files</Filter>
     </ClCompile>
-    <ClCompile Include="ancillarycat.leaderboard.ixx">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="module\ancillarycat.entity.ixx">
+      <Filter>Resource Files</Filter>
     </ClCompile>
-    <ClCompile Include="ancillarycat.config.ixx">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="module\ancillarycat.food.ixx">
+      <Filter>Resource Files</Filter>
     </ClCompile>
-    <ClCompile Include="ancillarycat.windows.api.ixx">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="module\ancillarycat.game.ixx">
+      <Filter>Resource Files</Filter>
     </ClCompile>
-    <ClCompile Include="realMain.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="module\ancillarycat.generator.ixx">
+      <Filter>Resource Files</Filter>
     </ClCompile>
-    <ClCompile Include="ancillarycat.console.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="module\ancillarycat.handler.ixx">
+      <Filter>Resource Files</Filter>
     </ClCompile>
-    <ClCompile Include="ancillarycat.entity.ixx">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="module\ancillarycat.leaderboard.ixx">
+      <Filter>Resource Files</Filter>
     </ClCompile>
-    <ClCompile Include="ancillarycat.generator.ixx">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="module\ancillarycat.panel.ixx">
+      <Filter>Resource Files</Filter>
     </ClCompile>
-    <ClCompile Include="ancillarycat.game.ixx">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="module\ancillarycat.snake.ixx">
+      <Filter>Resource Files</Filter>
     </ClCompile>
-    <ClCompile Include="ancillarycat.entities.ixx">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="module\ancillarycat.utils.ixx">
+      <Filter>Resource Files</Filter>
     </ClCompile>
-    <ClCompile Include="ancillarycat.food.ixx">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="module\ancillarycat.windows.api.ixx">
+      <Filter>Resource Files</Filter>
     </ClCompile>
-    <ClCompile Include="ancillarycat.utils.ixx">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="module\std.compat.ixx">
+      <Filter>Resource Files</Filter>
     </ClCompile>
-    <ClCompile Include="ancillarycat.game.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="module\std.ixx">
+      <Filter>Resource Files</Filter>
     </ClCompile>
-    <ClCompile Include="ancillarycat.entity.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ancillarycat.ansi.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ancillarycat.api.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="config.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="limits.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="core.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="cpp.hint" />
   </ItemGroup>
 </Project>

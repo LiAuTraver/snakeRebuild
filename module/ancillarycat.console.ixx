@@ -1,5 +1,5 @@
 module;
-#include "config.hpp"
+#include "../include/config.hpp"
 #include <Windows.h>
 export module ancillarycat.console;
 import std;

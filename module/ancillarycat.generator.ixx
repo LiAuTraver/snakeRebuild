@@ -1,5 +1,5 @@
 module;
-#include "config.hpp"
+#include "../include/config.hpp"
 #undef NODISCARD
 #define NODISCARD [[nodiscard]]
 export module ancillarycat.api:generator;

@@ -1,7 +1,7 @@
 #pragma warning(disable : 4067)
 #pragma warning(disable : 5057)
 
-#include "config.hpp"
+#include "./include/config.hpp"
 import ancillarycat.console;
 import std;
 

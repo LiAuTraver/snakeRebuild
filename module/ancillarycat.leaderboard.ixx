@@ -1,5 +1,5 @@
 module;
-#include "config.hpp";
+#include "../include/config.hpp";
 #include <Windows.h>;
 export module ancillarycat.leaderboard;
 
@@ -10,8 +10,7 @@ import ancillarycat.api;
 namespace game
 {
 export void leaderboardInit();
-export const std::chrono::seconds timer(const std::chrono::milliseconds& duration = std::chrono::milliseconds(INTERVALS));
-export std::chrono::milliseconds elapsed(0);
+
 
 }
 namespace game
@@ -33,15 +32,6 @@ DEFINITION inline void leaderboardInit() {
 		file.close();
 	}
 }
-
-DEFINITION inline const std::chrono::seconds timer(const std::chrono::milliseconds& duration)
-{
-	std::this_thread::sleep_for(duration);
-	elapsed += duration;
-	// cast milli to sec
-	return std::chrono::duration_cast<std::chrono::seconds>(elapsed);
-}
-
 DEFINITION inline void writeDown(const std::string_view name, const short& score, const long double& time, const std::chrono::seconds& gameTime)
 {
 	if (writeAccess) {

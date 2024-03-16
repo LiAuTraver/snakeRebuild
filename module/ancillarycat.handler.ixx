@@ -1,6 +1,6 @@
 module;
 #pragma comment(lib, "winmm.lib")
-#include "config.hpp";
+#include "../include/config.hpp";
 #include <csignal>;
 #include <Windows.h>;
 export module ancillarycat.handler;
