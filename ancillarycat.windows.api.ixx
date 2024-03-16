@@ -1,8 +1,7 @@
 module;
 #include "config.hpp";
+#include <Windows.h>;
 export module ancillarycat.windows.api;
-
-import <Windows.h>;
 import std;
 
 export wchar_t systemRoot[MAX_PATH];

@@ -1,0 +1,168 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.27"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "snakeRebuild",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "ancillarycat.ansi::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ancillarycat.ansi-Debug-b3c5a764f5d40edc64d1.json",
+					"name" : "ancillarycat.ansi",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ancillarycat.config::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ancillarycat.config-Debug-5941226d67890736a790.json",
+					"name" : "ancillarycat.config",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ancillarycat.console::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ancillarycat.console-Debug-c9219a3d76e5a8d2be21.json",
+					"name" : "ancillarycat.console",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ancillarycat.entities::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ancillarycat.entities-Debug-047c6d3abf23eda74742.json",
+					"name" : "ancillarycat.entities",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ancillarycat.game::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ancillarycat.game-Debug-c7ddcb58174982c9ff7b.json",
+					"name" : "ancillarycat.game",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ancillarycat.generator::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ancillarycat.generator-Debug-fa8c661d140f0889f4a3.json",
+					"name" : "ancillarycat.generator",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ancillarycat.handler::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ancillarycat.handler-Debug-e3fa74312c49a16d41e6.json",
+					"name" : "ancillarycat.handler",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ancillarycat.leaderboard::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ancillarycat.leaderboard-Debug-ba1d8968c437fa14bea3.json",
+					"name" : "ancillarycat.leaderboard",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ancillarycat.panel::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ancillarycat.panel-Debug-61c8cff1861e7d3358fe.json",
+					"name" : "ancillarycat.panel",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ancillarycat.windows.api::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ancillarycat.windows.api-Debug-7d8be038d076b8a4750d.json",
+					"name" : "ancillarycat.windows.api",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "snakeRebuild::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-snakeRebuild-Debug-be75505789f7f953509a.json",
+					"name" : "snakeRebuild",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "std::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-std-Debug-76b2ee5c6c48deda34a0.json",
+					"name" : "std",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "std.compat::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-std.compat-Debug-5e1f2d571ca14d33ea93.json",
+					"name" : "std.compat",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "M:/Projects/snakeRebuild/cmake-build-debug-visual-studio",
+		"source" : "M:/Projects/snakeRebuild"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 7
+	}
+}

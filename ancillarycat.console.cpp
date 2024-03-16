@@ -1,12 +1,10 @@
 module;
+#include <Windows.h>
+#include "config.hpp"
+#include <conio.h>
 module ancillarycat.console;
-import <Windows.h>;
-import "config.hpp";
-import <conio.h>;
 import ancillarycat.ansi;
 import std;
-// intellisense went wrong. here I include the header file to fix it
-#include <Windows.h>
 
 Console::Console() : cursorCoordinate({ 0,0 }), cursorRow(0), cursorCol(0)
 {
@@ -41,15 +39,6 @@ Console& Console::getCursorCoordinate() noexcept
 	cursorRow = cursorCoordinate.Y;
 	cursorCol = cursorCoordinate.X;
 	return *this;
-}
-Console& Console::setCursorCoordinate(const SHORT row, const SHORT col)
-{
-	this
-		->getCursorCoordinate();
-	cursorCoordinate.Y = row;
-	cursorCoordinate.X = col;
-	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), cursorCoordinate);
-	return this->getCursorCoordinate();
 }
 Console& Console::moveCursor(const SHORT deltaRow, const SHORT deltaCol)
 {
@@ -180,6 +169,14 @@ Console& Console::return_impl_ln(const SHORT& row, const std::string_view str, c
 		.centered(str, color, background, false)
 		.setCursorCoordinate(preY, preX);
 	// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ get back to the original cursor position
+}
+
+Console& Console::set_cur_coor_impl(const SHORT& row, const SHORT& col) noexcept
+{
+	cursorCoordinate.Y = row;
+	cursorCoordinate.X = col;
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), cursorCoordinate);
+	return *this;
 }
 
 

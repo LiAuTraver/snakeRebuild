@@ -1,5 +1,5 @@
 module;
-#include"config.hpp";
+#include "config.hpp"
 export module ancillarycat.panel;
 
 import ancillarycat.ansi;
@@ -7,11 +7,11 @@ import ancillarycat.console;
 import std;
 
 NO_EXPORT const static std::vector<std::string> SNAKE{
-	" ____              _        ",
-	"/ ___| _ __   __ _| | _____ ",
-	"\\___ \\| '_ \\ / _` | |/ / _ \\",
-	" ___) | | | | (_| |   <  __/",
-	"|____/|_| |_|\\__,_|_|\\_\\___|"
+	R"( ____              _        )",
+	R"(/ ___| _ __   __ _| | _____ )",
+	R"(\___ \| '_ \ / _` | |/ / _ \)",
+	R"( ___) | | | | (_| |   <  __/)",
+	R"(|____/|_| |_|\__,_|_|\_\___|)"
 };
 
 namespace panel

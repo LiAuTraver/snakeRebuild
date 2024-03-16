@@ -135,6 +135,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ancillarycat.food.ixx" />
+    <ClCompile Include="ancillarycat.game.cpp" />
     <ClCompile Include="ancillarycat.game.ixx" />
     <ClCompile Include="ancillarycat.ansi.ixx" />
     <ClCompile Include="ancillarycat.config.ixx" />
@@ -147,6 +149,7 @@
     <ClCompile Include="ancillarycat.leaderboard.ixx" />
     <ClCompile Include="ancillarycat.panel.ixx" />
     <ClCompile Include="ancillarycat.snake.ixx" />
+    <ClCompile Include="ancillarycat.utils.ixx" />
     <ClCompile Include="ancillarycat.windows.api.ixx" />
     <ClCompile Include="snakeRebuild.cpp" />
     <ClCompile Include="realMain.cpp" />

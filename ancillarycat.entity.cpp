@@ -6,14 +6,14 @@ import ancillarycat.generator;
 import std;
 Entity::Entity() : y(0), x(0), c(' '), nDirection(direction::NO_DIRECTION), speed(0) { count++; }
 Entity::Entity(const Entity& entity) : y(entity.y), x(entity.x), c(entity.c), nDirection(entity.nDirection), speed(entity.speed) { count++; }
-Entity::Entity(Entity&& entity) noexcept : y(entity.y), x(entity.x), c(entity.c), nDirection(entity.nDirection), speed(entity.speed) {
-	entity.y = 0;
-	entity.x = 0;
-	entity.c = ' ';
-	entity.nDirection = direction::NO_DIRECTION;
-	entity.speed = 0;
-	count++;
-}
+//Entity::Entity(Entity&& entity) noexcept : y(entity.y), x(entity.x), c(entity.c), nDirection(entity.nDirection), speed(entity.speed) {
+//	entity.y = 0;
+//	entity.x = 0;
+//	entity.c = ' ';
+//	entity.nDirection = direction::NO_DIRECTION;
+//	entity.speed = 0;
+//	count++;
+//}
 Entity::Entity(const int& generateTag, const char& _c) : c(_c), speed(0) {
 	switch (generateTag) {
 	case GENERATE_SNAKE:
@@ -60,9 +60,9 @@ Entity& Entity::disappear() noexcept {
 	return this->erase();
 }
 // move and clear and show
-Entity& Entity::move(const short& offset) noexcept
+Entity& Entity::move(const short& offset, const char& delimiter) noexcept
 {
-	this->erase();
+	this->erase(delimiter);
 	switch (nDirection)
 	{
 	case direction::UP:
@@ -81,21 +81,20 @@ Entity& Entity::move(const short& offset) noexcept
 		[[unlikely]];
 		//exit(INVALID_DIRECTION_INPUT); // sth wrong here
 	}
-	return this->move_impl(offset);
+	return this->to_impl(y, x);
 }
-
-Entity& Entity::move_impl([[maybe_unused]]const short& offset) noexcept
+Entity& Entity::to_impl(const short& _y, const short& _x) noexcept
 {
 	console
-		.setCursorCoordinate(y, x)
-		.print(std::string{ c });
+		.set_cur_coor_impl(_y, _x);
+	std::print("{}", c);
 	return *this;
 }
-Entity& Entity::erase() noexcept
+Entity& Entity::erase(const char& delimiter) noexcept
 {
 	console
-		.setCursorCoordinate(y, x)
-		.print(" ");
+		.set_cur_coor_impl(y, x);
+	std::print("{}",delimiter);
 	return *this;
 }
 

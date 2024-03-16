@@ -1,5 +1,4 @@
 module;
-
 export module ancillarycat.ansi;
 
 export enum class ansiColor : int {

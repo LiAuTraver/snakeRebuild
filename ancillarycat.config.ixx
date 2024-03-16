@@ -1,9 +1,6 @@
 module;
-
 export module ancillarycat.config;
-
 import ancillarycat.console;
-
 namespace game
 {
 export void config()

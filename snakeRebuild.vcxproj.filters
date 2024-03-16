@@ -66,6 +66,15 @@
     <ClCompile Include="ancillarycat.entities.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ancillarycat.food.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ancillarycat.utils.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ancillarycat.game.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="config.hpp">

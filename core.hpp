@@ -20,21 +20,23 @@ constexpr inline int KEY_RIGHT = 77;
 constexpr inline int GENERATE = 1 << 6;
 constexpr inline int GENERATE_COOR = 1 << 7;
 constexpr inline int GENERATE_DIR = 1 << 8;
+constexpr inline int GENERATE_SNAKE = 1 << 9;
 constexpr inline int IN_BOUND = 1 << 3;
 constexpr inline int OUT_OF_BOUND = 1 <<4;
 constexpr inline int INVALID_DIRECTION_INPUT = 1 << 5;
 constexpr inline int GAMEOVER = 1 << 10;
 
-constexpr inline short MIN_HEIGHT = 20; // console window minimum height
-constexpr inline short MIN_WIDTH = 40; // console window minimum width
-constexpr inline short START_ROW = 5; // game box start row
-constexpr inline short START_COL = 5; // game box start column
-constexpr inline short BOX_HEIGHT = 20; // game box height
-constexpr inline short BOX_WIDTH = 50; // game box width
-constexpr inline short TIMER_ROW = 14; // later specified
-constexpr inline short TIMER_COL = 65;// later specified
-constexpr inline short TIMER_HEIGHT = 3; // timer height, plus the border
-constexpr inline short TIMER_WIDTH = 20; // timer width, plus the border
+constinit inline long long INTERVALS = 250; // game speed, fps = 1000 / INTERVALS
+constinit inline short MIN_HEIGHT = 20; // console window minimum height
+constinit inline short MIN_WIDTH = 40; // console window minimum width
+constinit inline short START_ROW = 5; // game box start row
+constinit inline short START_COL = 5; // game box start column
+constinit inline short BOX_HEIGHT = 20; // game box height
+constinit inline short BOX_WIDTH = 50; // game box width
+constinit inline short INFO_ROW = 14; // later specified
+constinit inline short INFO_COL = 65;// later specified
+constinit inline short INFO_HEIGHT = 3; // timer height, plus the border
+constinit inline short INFO_WIDTH = 30; // timer width, plus the border
 enum class direction : int {
 	NO_DIRECTION = 0,
 	UP,

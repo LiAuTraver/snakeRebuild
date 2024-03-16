@@ -1,13 +1,9 @@
 module;
-
 #pragma comment(lib, "winmm.lib")
-
 #include "config.hpp";
-
+#include <csignal>;
+#include <Windows.h>;
 export module ancillarycat.handler;
-
-import <csignal>;
-import <Windows.h>;
 import ancillarycat.console;
 import ancillarycat.game;
 import ancillarycat.leaderboard;
