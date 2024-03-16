@@ -48,10 +48,10 @@
     <ClCompile Include="realMain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ancillarycat.impl.console.ixx">
+    <ClCompile Include="ancillarycat.console.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ancillarycat.impl.entity.ixx">
+    <ClCompile Include="ancillarycat.entity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ancillarycat.entity.ixx">
@@ -60,7 +60,10 @@
     <ClCompile Include="ancillarycat.generator.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ancilarycat.game.ixx">
+    <ClCompile Include="ancillarycat.game.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ancillarycat.entities.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

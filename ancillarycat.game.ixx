@@ -6,46 +6,71 @@ import std;
 import ancillarycat.ansi;
 import ancillarycat.config;
 import ancillarycat.console;
-import ancillarycat.snake;
+import ancillarycat.entities;
 import ancillarycat.leaderboard;
 import ancillarycat.windows.api;
-import ancillarycat.entity;
-namespace game
+
+export namespace game
 {
-export void clock(const std::chrono::seconds&, const int&, const int&);
-export int gameOver();
-export void gameInit();
-export int snakeGame();
-}
-namespace game
+void time_logger(const std::chrono::seconds&, const int&, const int&);
+int gameOver();
+void gameInit();
+int snakeGame();
+void score_logger(const short&);
+void time_logger(const std::chrono::seconds& cur, const int& row = INFO_ROW, const int& col = INFO_COL);
+void score_logger(const short& score)
 {
-export DEFINITION void clock(const std::chrono::seconds& cur, const int& row = TIMER_ROW, const int& col = TIMER_COL) {
+	const std::string current_score = "Score: " + std::to_string(score);
+	const short len = (INFO_WIDTH - current_score.length())/2 + INFO_COL;
 	console
-		.printAndReturn(TIMER_ROW, TIMER_COL, std::to_string(cur.count()));
+		.setStyle(ansiStyle::blink)
+		.shuttle(INFO_ROW + 1, len, current_score, ansiColor::redIntense);
 }
-export DEFINITION int gameOver() {
-	api::soundEvent(L"\\Media\\Windows Critical Stop.wav");
+
+void time_logger(const std::chrono::seconds& cur, const int& row, const int& col) {
+	const std::string elapsed = "Time: " + std::to_string(cur.count()) + "s";
+	const short len = (INFO_WIDTH - elapsed.length())/2 + INFO_COL;
 	console
-		.bot("Game Over!", ansiColor::red, ansiBackground::black)
-		.centeredAndReturn(console.height - 2, "Press Enter to return to menu", ansiColor::white, ansiBackground::black);
-	game::elapsed = std::chrono::milliseconds(0);
+		.setStyle(ansiStyle::blink)
+		.shuttle(INFO_ROW, len, elapsed, ansiColor::white);
+}
+int gameOver() {
+	api::soundEvent(L"\\Media\\Windows Critical Stop.wav", soundFlag::async, soundFlag::async);
+	console
+		.centeredShuttle(console.height - 2, "Game Over!", ansiColor::red, ansiBackground::black)
+		.bot("Press Enter to return to menu", ansiColor::white, ansiBackground::black);
 	console.setCursorCoordinate(0, 0);
 	std::cin.get();
 	system("CLS");
+	game::elapsed = std::chrono::milliseconds(0);
 	return GAMEOVER;
 }
-export DEFINITION void gameInit() {
-	system("CLS");
-	console.box(START_ROW, START_COL, BOX_HEIGHT, BOX_WIDTH)
-		.box(TIMER_ROW, TIMER_COL, TIMER_HEIGHT, TIMER_WIDTH);
+NO_EXPORT std::mutex consoleMutex;
+void gameInit() {
+	consoleMutex.lock();
+	console
+		.box(START_ROW, START_COL, BOX_HEIGHT, BOX_WIDTH)
+		.box(INFO_ROW, INFO_COL, INFO_HEIGHT, INFO_WIDTH);
 	api::soundEvent(L"\\Media\\Ring01.wav");
 	for (int i = 0; i < 3; i++) {
 		console.bot("Game will start in " + std::to_string(3 - i) + " seconds", ansiColor::green, ansiBackground::black);
 		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	}
-	console.bot("Game Start!", ansiColor::green, ansiBackground::black);
+	console
+		.setStyle(ansiStyle::blink)
+		.bot("Game Start!", ansiColor::green, ansiBackground::black);
+	consoleMutex.unlock();
+
+	std::thread([]() {
+		std::this_thread::sleep_for(std::chrono::seconds(3));
+		consoleMutex.lock();
+		console.bot("             "); // Clear the "Game Start!" message
+		consoleMutex.unlock();
+		}).detach();
 }
-DEFINITION int snakeGame() {
+
+int snakeGame() {
+	system("CLS");
 	Snake snake('@');
 	Food food('$');
 	game::gameInit();
@@ -96,7 +121,6 @@ DEFINITION int snakeGame() {
 			}
 		}
 		snake.move();
-		food.show();
 		if (checkOutofBound(snake) == INVALID) {
 			return gameOver();
 		}
@@ -108,6 +132,7 @@ DEFINITION int snakeGame() {
 			{
 				return gameOver();
 			}
+			++snake.score;
 			api::soundEvent(L"\\Media\\Windows Proximity Notification.wav");
 		}
 		if (snake.check() == INVALID)
@@ -119,7 +144,8 @@ DEFINITION int snakeGame() {
 		}
 		else
 		{
-			game::timer();
+			game::time_logger(game::timer());
+			game::score_logger(snake.score);
 		}
 	}
 	//std::unreachable();
