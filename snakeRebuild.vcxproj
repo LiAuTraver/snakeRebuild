@@ -107,7 +107,7 @@
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);module_bug</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions);module_bug</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
@@ -143,28 +143,30 @@
     <ClInclude Include="include\limits.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="module\ancillarycat.ansi.ixx" />
     <ClCompile Include="module\ancillarycat.api.ixx" />
-    <ClCompile Include="module\ancillarycat.config.ixx" />
+    <ClCompile Include="module\ancillarycat.blocks.ixx" />
     <ClCompile Include="module\ancillarycat.console.ixx" />
     <ClCompile Include="module\ancillarycat.entities.ixx" />
     <ClCompile Include="module\ancillarycat.entity.ixx" />
     <ClCompile Include="module\ancillarycat.food.ixx" />
     <ClCompile Include="module\ancillarycat.game.ixx" />
-    <ClCompile Include="module\ancillarycat.generator.ixx" />
     <ClCompile Include="module\ancillarycat.handler.ixx" />
-    <ClCompile Include="module\ancillarycat.leaderboard.ixx" />
-    <ClCompile Include="module\ancillarycat.panel.ixx" />
+    <ClCompile Include="module\ancillarycat.obstacle.ixx" />
     <ClCompile Include="module\ancillarycat.snake.ixx" />
     <ClCompile Include="module\ancillarycat.utils.ixx" />
-    <ClCompile Include="module\ancillarycat.windows.api.ixx" />
     <ClCompile Include="module\std.compat.ixx" />
     <ClCompile Include="module\std.ixx" />
     <ClCompile Include="snakeRebuild.cpp" />
+    <ClCompile Include="src\ancillarycat.ansi.ixx" />
+    <ClCompile Include="src\ancillarycat.config.ixx" />
     <ClCompile Include="src\ancillarycat.console.cpp" />
     <ClCompile Include="src\ancillarycat.entity.cpp" />
-    <ClCompile Include="src\ancillarycat.game.cpp" />
+    <ClCompile Include="src\ancillarycat.game.game.ixx" />
+    <ClCompile Include="src\ancillarycat.generator.ixx" />
+    <ClCompile Include="src\ancillarycat.handler.cpp" />
+    <ClCompile Include="src\ancillarycat.leaderboard.ixx" />
     <ClCompile Include="src\ancillarycat.utils.cpp" />
+    <ClCompile Include="src\ancillarycat.windows.api.ixx" />
     <ClCompile Include="src\realMain.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

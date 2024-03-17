@@ -35,7 +35,7 @@
     <ClCompile Include="src\ancillarycat.entity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ancillarycat.game.cpp">
+    <ClCompile Include="src\ancillarycat.game.game.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\realMain.cpp">
@@ -44,13 +44,7 @@
     <ClCompile Include="snakeRebuild.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="module\ancillarycat.ansi.ixx">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
     <ClCompile Include="module\ancillarycat.api.ixx">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
-    <ClCompile Include="module\ancillarycat.config.ixx">
       <Filter>Resource Files</Filter>
     </ClCompile>
     <ClCompile Include="module\ancillarycat.console.ixx">
@@ -68,25 +62,13 @@
     <ClCompile Include="module\ancillarycat.game.ixx">
       <Filter>Resource Files</Filter>
     </ClCompile>
-    <ClCompile Include="module\ancillarycat.generator.ixx">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
     <ClCompile Include="module\ancillarycat.handler.ixx">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
-    <ClCompile Include="module\ancillarycat.leaderboard.ixx">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
-    <ClCompile Include="module\ancillarycat.panel.ixx">
       <Filter>Resource Files</Filter>
     </ClCompile>
     <ClCompile Include="module\ancillarycat.snake.ixx">
       <Filter>Resource Files</Filter>
     </ClCompile>
     <ClCompile Include="module\ancillarycat.utils.ixx">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
-    <ClCompile Include="module\ancillarycat.windows.api.ixx">
       <Filter>Resource Files</Filter>
     </ClCompile>
     <ClCompile Include="module\std.compat.ixx">
@@ -97,6 +79,30 @@
     </ClCompile>
     <ClCompile Include="src\ancillarycat.utils.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="module\ancillarycat.obstacle.ixx">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ancillarycat.handler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ancillarycat.windows.api.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ancillarycat.ansi.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ancillarycat.config.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ancillarycat.generator.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ancillarycat.leaderboard.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="module\ancillarycat.blocks.ixx">
+      <Filter>Resource Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

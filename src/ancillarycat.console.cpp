@@ -6,8 +6,14 @@ module ancillarycat.console;
 import ancillarycat.api;
 import std;
 
-Console::Console() : cursorCoordinate({ 0,0 }), cursorRow(0), cursorCol(0)
+Console::Console() : cursorCoordinate({ 0,0 })
 {
+	this->oninitialize();
+}
+// use when the program `restarts` or `resumes` from a `paused` state
+Console& Console::oninitialize() noexcept
+{
+	this->clear();
 	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &consoleScreenBufferInfo_);
 	handleStdin_ = GetStdHandle(STD_INPUT_HANDLE);  // Get the standard input handle
 	GetConsoleMode(handleStdin_, &stdinMode_);
@@ -24,6 +30,7 @@ Console::Console() : cursorCoordinate({ 0,0 }), cursorRow(0), cursorCol(0)
 	SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursorInfo_);
 	width = consoleScreenBufferInfo_.srWindow.Right - consoleScreenBufferInfo_.srWindow.Left + 1;
 	height = consoleScreenBufferInfo_.srWindow.Bottom - consoleScreenBufferInfo_.srWindow.Top + 1;
+	return *this;
 }
 // cursor control
 Console& Console::setCursorState(const bool& state) noexcept
@@ -86,14 +93,6 @@ Console& Console::box(const SHORT& curRow, const SHORT& curCol, SHORT boxHeight,
 	std::print("{}", border);
 	return this->setCursorCoordinate(curRow, curCol);
 }
-// use when the program `restarts` or `resumes` from a `paused` state
-Console& Console::terminalSizeChange() {
-	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &consoleScreenBufferInfo_);
-	width = consoleScreenBufferInfo_.srWindow.Right - consoleScreenBufferInfo_.srWindow.Left + 1;
-	height = consoleScreenBufferInfo_.srWindow.Bottom - consoleScreenBufferInfo_.srWindow.Top + 1;
-	return *this;
-}
-
 Console& Console::print(const std::string_view str, const ansiColor& color, const ansiBackground& background) noexcept
 {
 	std::print("\033[{};{}m{}\033[{}m", static_cast<int>(background), static_cast<int>(color), str.data(), static_cast<int>(ansiStyle::reset));
@@ -151,7 +150,7 @@ Console& Console::fillLine(const char& fillChar, const int& dRow, const bool& ne
 	return this->getCursorCoordinate();
 }
 
-Console& Console::return_impl(const SHORT& row, const SHORT& col, const std::string_view str, const ansiColor& color, const ansiBackground& background) noexcept
+Console& Console::return_impl(const SHORT& row, const SHORT& col, const std::string_view str, const ansiColor& color, const ansiBackground& background, const bool& needsRevisited) noexcept
 {
 	const SHORT preY = cursorCoordinate.Y;
 	const SHORT preX = cursorCoordinate.X;
@@ -161,7 +160,7 @@ Console& Console::return_impl(const SHORT& row, const SHORT& col, const std::str
 	// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ get back to the original cursor position
 }
 
-Console& Console::return_impl_ln(const SHORT& row, const std::string_view str, const ansiColor& color, const ansiBackground& background) noexcept
+Console& Console::return_impl_ln(const SHORT& row, const std::string_view str, const ansiColor& color, const ansiBackground& background, const bool& needsRevisited) noexcept
 {
 	const SHORT preY = cursorCoordinate.Y;
 	const SHORT preX = cursorCoordinate.X;
@@ -169,6 +168,22 @@ Console& Console::return_impl_ln(const SHORT& row, const std::string_view str, c
 		.centered(str, color, background, false)
 		.setCursorCoordinate(preY, preX);
 	// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ get back to the original cursor position
+}
+
+Console& Console::printM(const std::string_view str, const short& prevY, const short& prevX, const ansiColor& color,
+	const ansiBackground& background) noexcept
+{
+	//std::thread([&]() {
+//	console
+//		.bot(str, ansiColor::green, ansiBackground::black);
+//	std::this_thread::sleep_for(std::chrono::seconds(3));
+//	cursorMutex_.lock();
+//	console.bot(std::string(str.length(), ' ')); // Clear the "Game Start!" message
+//	cursorMutex_.unlock();
+//	}).detach();
+
+	// TODO: Implement a mutex lock
+	return *this;
 }
 
 Console& Console::set_cur_coor_impl(const SHORT& row, const SHORT& col) noexcept
@@ -179,21 +194,11 @@ Console& Console::set_cur_coor_impl(const SHORT& row, const SHORT& col) noexcept
 	return *this;
 }
 
-
-//Console& Console::fill_line_impl() noexcept
-//{
-//	std::string line(width - 1, ' ');
-//	std::println("\033[{}m{}\033[{}m", static_cast<int>(ansiStyle::reset), line, static_cast<int>(ansiStyle::reset));
-//	return *this;
-//}
-
-//decltype(&Console::print) log = &this->print;
-
-// failed to compile	
-//// variadic template, perfect forwarding
-//template<typename... Args>
-//Console& Console::print(const ansiColor& color, const ansiBackground& background, Args&&... args) {
-//	std::print("\033[{};{}m", static_cast<int>(background), static_cast<int>(color));
-//	std::print(std::forward<Args>(args)...);
-//	std::print("\033[{}m", static_cast<int>(ansiStyle::reset));
-//	return this->getCursorCoordinate();
+Console& Console::clear() noexcept
+{
+	DWORD count;
+	resetAnsi();
+	FillConsoleOutputCharacter(handleStdout_, L' ', width * height, { 0,0 }, &count);
+	FillConsoleOutputAttribute(handleStdout_, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE, width * height, { 0,0 }, &count);
+	return this->setCursorCoordinate(0, 0);
+}

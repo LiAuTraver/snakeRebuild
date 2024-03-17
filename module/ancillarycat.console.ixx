@@ -8,10 +8,10 @@ export class Console;
 class Console final {
 public:
 	explicit Console();
-	Console& setCursorState(const bool& state = true) noexcept;
+	Console& oninitialize() noexcept;
+	Console& setCursorState(const bool& state = false) noexcept;
 	Console& getCursorCoordinate() noexcept;
-	Console& setCursorCoordinate(const SHORT row = DEFAULT_VAL, const SHORT col = DEFAULT_VAL)
-	{
+	Console& setCursorCoordinate(const SHORT row = DEFAULT_VAL, const SHORT col = DEFAULT_VAL){
 		return this->set_cur_coor_impl(row, col).getCursorCoordinate();
 	}
 	Console& moveCursor(const SHORT deltaRow = 0, const SHORT deltaCol = 0);
@@ -19,8 +19,10 @@ public:
 	Console& setAnsi(const WORD attribute) noexcept;
 	static int getch(const bool& needRealKey = false) noexcept;
 	Console& box(const SHORT& curRow = 0, const SHORT& curCol = 0, SHORT boxHeight = DEFAULT_VAL, SHORT boxWidth = DEFAULT_VAL, const char& border = '+', const char& horizontal = '-', const char& vertical = '|');
-	Console& terminalSizeChange();
 	Console& print(std::string_view str, const ansiColor& color = ansiColor::white, const ansiBackground& background = ansiBackground::reset) noexcept;
+	Console& log(std::string_view str, const ansiColor& color = ansiColor::white, const ansiBackground& background = ansiBackground::reset) noexcept{
+		return this->print(str, color, background);
+	}
 	Console& println(std::string_view str, const ansiColor& color = ansiColor::white, const ansiBackground& background = ansiBackground::reset) noexcept;
 	Console& centered(const std::string_view str, const ansiColor& color = ansiColor::white, const ansiBackground& background = ansiBackground::reset, const bool& newline = true) noexcept;
 	Console& centered(const std::string_view str, const bool& newline) noexcept {
@@ -36,31 +38,34 @@ public:
 	}
 	Console& setStyle(const ansiStyle& style = ansiStyle::reset) noexcept;
 	Console& fillLine(const char& fillChar = ' ', const int& dRow = 1, const bool& newline = false)noexcept;
-	Console& centeredShuttle(const SHORT& lineNum, const std::string_view str, const ansiColor& color, const ansiBackground& background) noexcept
+	Console& centeredShuttle(const SHORT& lineNum, const std::string_view str, const ansiColor& color, const ansiBackground& background,const bool& needsRevisited = false) noexcept
 	{
-		return this->return_impl_ln(lineNum, str, color, background);
+		return this->return_impl_ln(lineNum, str, color, background, needsRevisited);
 	}
-	Console& shuttle(const SHORT& row, const SHORT& col, const std::string_view str, const ansiColor& color = ansiColor::white, const ansiBackground& background = ansiBackground::reset) noexcept
+	Console& shuttle(const SHORT& row, const SHORT& col, const std::string_view str, const ansiColor& color = ansiColor::white, const ansiBackground& background = ansiBackground::reset, const bool& needsRevisited = false) noexcept
 	{
-		return this->return_impl(row, col, str, color, background);
+		return this->return_impl(row, col, str, color, background, needsRevisited);
 	}
-	Console& top(const std::string_view str, const ansiColor& color = ansiColor::white, const ansiBackground& background = ansiBackground::reset) noexcept {
-		return this->centeredShuttle(0, str, color, background);
+	Console& top(const std::string_view str, const ansiColor& color = ansiColor::white, const ansiBackground& background = ansiBackground::reset, const bool& needsRevisited = false) noexcept {
+		return this->centeredShuttle(0, str, color, background,needsRevisited);
 	}
-	Console& bot(const std::string_view str, const ansiColor& color = ansiColor::white, const ansiBackground& background = ansiBackground::reset) noexcept {
-		return this->centeredShuttle(height - 1, str, color, background);
+	Console& bot(const std::string_view str, const ansiColor& color = ansiColor::white, const ansiBackground& background = ansiBackground::reset, const bool& needsRevisited = false) noexcept {
+		return this->centeredShuttle(height - 1, str, color, background,needsRevisited);
 	}
 	Console& set_cur_coor_impl(const SHORT& row, const SHORT& col) noexcept;
+	Console& clear() noexcept;
 
 private:
-	Console& return_impl(const SHORT& row, const SHORT& col, const std::string_view str, const ansiColor& color, const ansiBackground& background) noexcept;
-	Console& return_impl_ln(const SHORT& row, const std::string_view str, const ansiColor& color, const ansiBackground& background) noexcept;
+	std::mutex cursorMutex_;
+	Console& return_impl(const SHORT& row, const SHORT& col, const std::string_view str, const ansiColor& color, const ansiBackground& background, const bool& needsRevisited = false) noexcept;
+	Console& return_impl_ln(const SHORT& row, const std::string_view str, const ansiColor& color, const ansiBackground& background, const bool& needsRevisited = false) noexcept;
+	Console& printM(const std::string_view str, const short& prevY,const short& prevX,const ansiColor& color = ansiColor::white, const ansiBackground& background = ansiBackground::reset) noexcept;
 public:
 	SHORT width;
 	SHORT height;
 	COORD cursorCoordinate;
-	SHORT cursorRow;
-	SHORT cursorCol;
+	SHORT& cursorRow = cursorCoordinate.Y;
+	SHORT& cursorCol = cursorCoordinate.X;
 private:
 	CONSOLE_SCREEN_BUFFER_INFO consoleScreenBufferInfo_{};
 	HANDLE handleStdin_{};

@@ -1,6 +1,3 @@
-#pragma warning(disable : 4067)
-#pragma warning(disable : 5057)
-
 #include "./include/config.hpp"
 import ancillarycat.console;
 import std;
@@ -14,7 +11,7 @@ int main(const int argc, char* argv[]) {
 			//std::unreachable();
 		case RESTART_PROGRAM:
 			// TODO: re-initialize the console height and width
-			console.terminalSizeChange();
+			console.oninitialize();
 			continue;
 			//std::unreachable();
 		case UNKNOWN_ERROR:

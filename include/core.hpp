@@ -1,5 +1,6 @@
 #pragma once
 #pragma warning(disable: 5422)
+import std;
 // Constants that CANNOT be changed to another value:
 constexpr inline int EXIT_PROGRAM = 0;
 constexpr inline int RESTART_PROGRAM = 1;
@@ -25,6 +26,10 @@ constexpr inline int IN_BOUND = 1 << 3;
 constexpr inline int OUT_OF_BOUND = 1 <<4;
 constexpr inline int INVALID_DIRECTION_INPUT = 1 << 5;
 constexpr inline int GAMEOVER = 1 << 10;
+constexpr inline int HAS_WRITE_ACCESS = 1 << 11;
+constexpr inline int WRITE_ACCESS_DENIED = 1 << 12;
+constexpr inline int HAS_READ_ACCESS = 1 << 13;
+constexpr inline int READ_ACCESS_DENIED = 1 << 14;
 
 constinit inline long long INTERVALS = 250; // game speed, fps = 1000 / INTERVALS
 constinit inline short MIN_HEIGHT = 20; // console window minimum height
@@ -37,3 +42,6 @@ constinit inline short INFO_ROW = 14; // later specified
 constinit inline short INFO_COL = 65;// later specified
 constinit inline short INFO_HEIGHT = 3; // timer height, plus the border
 constinit inline short INFO_WIDTH = 30; // timer width, plus the border
+constexpr inline short MAX_RANKING_NUMBER = 10;
+
+

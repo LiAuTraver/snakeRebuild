@@ -4,7 +4,7 @@ module ancillarycat.utils;
 import ancillarycat.entities;
 namespace utils
 {
-	
+
 int checkOutofBound(const Entity& entity) {
 	// as for snake, I think only to check the head is enough
 	if (entity.y < START_ROW ||

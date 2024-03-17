@@ -42,7 +42,7 @@ export enum class soundFlag : int {
 
 namespace api {
 export inline void initializeSoundEvent() {
-	ExpandEnvironmentStringsW(L"%SystemRoot%", systemRoot, MAX_PATH);
+	ExpandEnvironmentStringsW(LR"(%SystemRoot%)", systemRoot, MAX_PATH);
 }
 
 export inline void soundEvent(const std::wstring_view path = L"", soundFlag flag1 = soundFlag::async, soundFlag flag2 = soundFlag::noStop) {

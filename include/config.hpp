@@ -38,4 +38,7 @@
 #define DEFINITION
 #endif
 
+#ifndef NODISCARD
+#define NODISCARD [[nodiscard]]
+#endif
 extern inline int realMain([[maybe_unused]] const int& argc, [[maybe_unused]] char* argv[]);

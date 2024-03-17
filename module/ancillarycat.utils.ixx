@@ -13,4 +13,5 @@ export std::chrono::milliseconds elapsed(0);
 export template <class _MyBase, class _MyDerived>
 	requires std::is_base_of_v<_MyBase, _MyDerived>
 bool instanceof(_MyBase*);
+
 }

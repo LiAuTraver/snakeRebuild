@@ -6,7 +6,6 @@ import <conio.h>;
 import <Windows.h>;
 import ancillarycat.console;
 import ancillarycat.api;
-import ancillarycat.leaderboard;
 import std;
 export class Snake;
 export class Node;
@@ -86,69 +85,6 @@ public:
 		}
 		return *this;
 	}
-	//Snake& moveNodeSeq(const short& offset = 1)
-	//{
-	//	 //for the first node, first check the direction of the snake,
-	//	 //if the direction is not the same as the snake, then change the direction of the node
-	//	 //and move the node forward
-	//	if (nodes.empty()) return *this;
-	//	auto it = nodes.begin();
-	//	it->move(offset);
-	//	if (it->nDirection != this->nDirection) {
-	//		it->nDirection = this->nDirection;
-	//	}
-	//	if (it >= nodes.end() - 1) {
-	//		return *this;
-	//	}
-	//	for (it = nodes.begin() + 1; it != nodes.end(); ++it) {
-	//		// check where's the previous node
-	//		// and move the current node to the previous node
-	//		// then check the direction of the previous node
-	//		const auto dx = (it - 1)->x - it->x;
-	//		const auto dy = (it - 1)->y - it->y;
-	//		if (dx == 0)
-	//		{
-	//			if (dy == static_cast<short>(-1 - speed))
-	//			{
-	//				it->nDirection = direction::UP;
-	//			}
-	//			else if (dy == static_cast<short>(1 + speed))
-	//			{
-	//				it->nDirection = direction::DOWN;
-	//			}
-	//			else
-	//			{
-	//				[[unlikely]];
-	//				//exit(INVALID_DIRECTION_INPUT);
-	//			}
-	//		}
-	//		else if (dy == 0)
-	//		{
-	//			if (dx == static_cast<short>(-1 - speed))
-	//			{
-	//				it->nDirection = direction::LEFT;
-	//			}
-	//			else if (dx == static_cast<short>(1 + speed))
-	//			{
-	//				it->nDirection = direction::RIGHT;
-	//			}
-	//			else
-	//			{
-	//				[[unlikely]];
-	//				//exit(INVALID_DIRECTION_INPUT);
-	//			}
-	//		}
-	//		else
-	//		{
-	//			[[unlikely]];
-	//			//exit(INVALID_DIRECTION_INPUT);
-	//		}
-	//		it->move(offset);
-	//		// for the last `offset` nodes, simply discard them
-	//		// currently only implement the offset = 1, so here might be blank.
-	//	}
-	//	return *this;
-	//}
 	virtual Snake& move(const short& offset, const char& delimiter) noexcept override {
 		const auto prevY = y;
 		const auto prevX = x;

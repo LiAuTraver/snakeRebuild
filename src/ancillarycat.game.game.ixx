@@ -1,8 +1,11 @@
 module;
 #include "../include/config.hpp"
-#include <Windows.h>
-module ancillarycat.game;
+export module ancillarycat.game:game;
+import :leaderboard;
 import ancillarycat.utils;
+import ancillarycat.console;
+import ancillarycat.api;
+import ancillarycat.entities;
 
 namespace game
 {
@@ -14,7 +17,6 @@ void score_logger(const short& score)
 		.setStyle(ansiStyle::blink)
 		.shuttle(INFO_ROW + 1, len, current_score, ansiColor::redIntense);
 }
-
 void time_logger(const std::chrono::seconds& cur, const short& row, const short& col) {
 	const std::string elapsed = "Time: " + std::to_string(cur.count()) + "s";
 	const short len = static_cast<short>((INFO_WIDTH - elapsed.length()) / 2 + col);
@@ -22,43 +24,32 @@ void time_logger(const std::chrono::seconds& cur, const short& row, const short&
 		.setStyle(ansiStyle::blink)
 		.shuttle(row, len, elapsed, ansiColor::white);
 }
-int gameOver() {
-	api::soundEvent(L"\\Media\\Windows Critical Stop.wav", soundFlag::async, soundFlag::async);
+int gameOver(Snake& snake) {
+	api::soundEvent(LR"(\Media\Windows Critical Stop.wav)", soundFlag::async, soundFlag::async);
 	console
 		.centeredShuttle(console.height - 2, "Game Over!", ansiColor::red, ansiBackground::black)
-		.bot("Press Enter to return to menu", ansiColor::white, ansiBackground::black);
-	console.setCursorCoordinate(0, 0);
+		.bot("Press Enter to return to menu", ansiColor::white, ansiBackground::black)
+		.setCursorCoordinate(0, 0);
+	game::writeBuffer(snake.score, utils::elapsed);
 	std::cin.get();
-	system("CLS");
-	utils::elapsed = std::chrono::milliseconds(0);
+	console.clear();
 	return GAMEOVER;
 }
-NO_EXPORT std::mutex consoleMutex;
 void gameInit() {
-	consoleMutex.lock();
 	console
 		.box(START_ROW, START_COL, BOX_HEIGHT, BOX_WIDTH)
 		.box(INFO_ROW, INFO_COL, INFO_HEIGHT, INFO_WIDTH);
-	api::soundEvent(L"\\Media\\Ring01.wav");
+	api::soundEvent(LR"(\Media\Ring01.wav)");
 	for (int i = 0; i < 3; i++) {
 		console.bot("Game will start in " + std::to_string(3 - i) + " seconds", ansiColor::green, ansiBackground::black);
 		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	}
 	console
 		.setStyle(ansiStyle::blink)
-		.bot("Game Start!", ansiColor::green, ansiBackground::black);
-	consoleMutex.unlock();
-
-	std::thread([]() {
-		std::this_thread::sleep_for(std::chrono::seconds(3));
-		consoleMutex.lock();
-		console.bot("             "); // Clear the "Game Start!" message
-		consoleMutex.unlock();
-		}).detach();
+		.bot("Game Start!", ansiColor::green, ansiBackground::black, true);
 }
-
 int snakeGame() {
-	system("CLS");
+	console.clear();
 	Snake snake('@');
 	Food food('$');
 	game::gameInit();
@@ -110,30 +101,26 @@ int snakeGame() {
 		}
 		snake.move(1, 'o');
 		if (utils::checkOutofBound(snake) == INVALID) {
-			return gameOver();
+			return gameOver(snake);
 		}
-		if (utils::checkInvalidPosition(snake, food) == INVALID)
-		{
+		if (utils::checkInvalidPosition(snake, food) == INVALID) {
 			food.regenerate().show();
-			if (utils::checkInvalidPosition(snake.grow(),snake.nodes.back()) == INVALID)
-			{
-				return gameOver();
+			if (utils::checkInvalidPosition(snake.grow(), snake.nodes.back()) == INVALID) {
+				utils::elapsed = std::chrono::milliseconds(0);
+				return gameOver(snake);
 			}
 			++snake.score;
 			api::soundEvent(LR"(\Media\Windows Proximity Notification.wav)");
 		}
 		if (snake.check() == INVALID)
 		{
-			return gameOver();
+			return gameOver(snake);
 		}
 		if (isIgnore) {
 			isIgnore = false;
 		}
-		else
-		{
-			game::time_logger(utils::timer());
-			game::score_logger(snake.score);
-		}
+		game::time_logger(utils::timer(std::chrono::milliseconds(250)), INFO_ROW, INFO_COL);
+		game::score_logger(snake.score);
 	}
 	//std::unreachable();
 }
