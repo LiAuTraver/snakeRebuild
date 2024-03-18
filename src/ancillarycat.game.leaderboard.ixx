@@ -1,6 +1,6 @@
 module;
 #include <Windows.h>
-#include "../include/config.hpp";
+#include "../include/config.hpp"
 export module ancillarycat.game:leaderboard;
 import std;
 import ancillarycat.console;

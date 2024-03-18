@@ -1,9 +1,9 @@
 module;
-#include "../include/config.hpp";
+#include "../include/config.hpp"
+#include <conio.h>
+#include  <Windows.h>
 export module ancillarycat.entities:snake;
 import :entity;
-import <conio.h>;
-import <Windows.h>;
 import ancillarycat.console;
 import ancillarycat.api;
 import std;

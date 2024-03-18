@@ -1,6 +1,5 @@
 #pragma once
 #pragma warning(disable: 5422)
-import std;
 // Constants that CANNOT be changed to another value:
 constexpr inline int EXIT_PROGRAM = 0;
 constexpr inline int RESTART_PROGRAM = 1;

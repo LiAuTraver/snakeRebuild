@@ -1,6 +1,6 @@
 module;
-#include "../include/config.hpp";
-#include <Windows.h>;
+#include "../include/config.hpp"
+#include <Windows.h>
 export module ancillarycat.api:windows;
 import std;
 

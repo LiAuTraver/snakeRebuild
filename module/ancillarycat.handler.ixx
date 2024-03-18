@@ -1,5 +1,5 @@
 module;
-#include "../include/config.hpp";
+#include "../include/config.hpp"
 export module ancillarycat.handler;
 
 namespace handler

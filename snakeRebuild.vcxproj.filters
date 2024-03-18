@@ -32,7 +32,7 @@
     <ClCompile Include="src\ancillarycat.console.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ancillarycat.entity.cpp">
+    <ClCompile Include="src\ancillarycat.entities.entity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\ancillarycat.game.game.ixx">
@@ -53,10 +53,10 @@
     <ClCompile Include="module\ancillarycat.entities.ixx">
       <Filter>Resource Files</Filter>
     </ClCompile>
-    <ClCompile Include="module\ancillarycat.entity.ixx">
+    <ClCompile Include="module\ancillarycat.entities.entity.ixx">
       <Filter>Resource Files</Filter>
     </ClCompile>
-    <ClCompile Include="module\ancillarycat.food.ixx">
+    <ClCompile Include="module\ancillarycat.entities.food.ixx">
       <Filter>Resource Files</Filter>
     </ClCompile>
     <ClCompile Include="module\ancillarycat.game.ixx">
@@ -65,7 +65,7 @@
     <ClCompile Include="module\ancillarycat.handler.ixx">
       <Filter>Resource Files</Filter>
     </ClCompile>
-    <ClCompile Include="module\ancillarycat.snake.ixx">
+    <ClCompile Include="module\ancillarycat.entities.snake.ixx">
       <Filter>Resource Files</Filter>
     </ClCompile>
     <ClCompile Include="module\ancillarycat.utils.ixx">
@@ -80,25 +80,25 @@
     <ClCompile Include="src\ancillarycat.utils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="module\ancillarycat.obstacle.ixx">
+    <ClCompile Include="module\ancillarycat.blocks.obstacle.ixx">
       <Filter>Resource Files</Filter>
     </ClCompile>
     <ClCompile Include="src\ancillarycat.handler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ancillarycat.windows.api.ixx">
+    <ClCompile Include="src\ancillarycat.api.windows.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ancillarycat.ansi.ixx">
+    <ClCompile Include="src\ancillarycat.api.ansi.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ancillarycat.config.ixx">
+    <ClCompile Include="src\ancillarycat.game.config.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ancillarycat.generator.ixx">
+    <ClCompile Include="src\ancillarycat.api.generator.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ancillarycat.leaderboard.ixx">
+    <ClCompile Include="src\ancillarycat.game.leaderboard.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="module\ancillarycat.blocks.ixx">

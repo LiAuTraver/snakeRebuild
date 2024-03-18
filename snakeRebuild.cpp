@@ -1,7 +1,6 @@
 #include "./include/config.hpp"
 import ancillarycat.console;
 import std;
-
 int main(const int argc, char* argv[]) {
 	while (true)
 		// zero to exit, non-zero to restart or else
