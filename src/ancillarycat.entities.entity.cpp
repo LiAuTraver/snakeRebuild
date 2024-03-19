@@ -49,7 +49,7 @@ Entity::Entity(const short& _y, const short& _x, const char& _c, const direction
 Entity& Entity::show() noexcept {
 	console
 		.setCursorCoordinate(this->y, this->x)
-		.print(std::string{ this->c });
+		.print("{}",ansiColor::white,ansiBackground::reset, this->c);
 	return *this;
 }
 Entity& Entity::regenerate() noexcept {

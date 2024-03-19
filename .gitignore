@@ -33,6 +33,8 @@ bld/
 [Ll]og/
 [Ll]ogs/
 
+snakeRebuild/
+
 # Clion-Cmake
 .idea/
 cmake-build-debug-visual-studio/

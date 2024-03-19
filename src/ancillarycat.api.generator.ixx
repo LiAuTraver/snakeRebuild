@@ -1,48 +1,57 @@
 module;
+
 #include "../include/config.hpp"
-#undef NODISCARD
-#define NODISCARD [[nodiscard]]
+
 export module ancillarycat.api:generator;
+
 import std;
+
 export enum class direction : int {
-	NO_DIRECTION = 0,
-	UP,
-	DOWN,
-	LEFT,
-	RIGHT
+    NO_DIRECTION = 0,
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT
 };
+
 export class Generator {
 public:
-	NODISCARD static direction direct() noexcept
-	{
-		return static_cast<direction>(random<int>(1, 4));
-	}
-	NODISCARD static std::pair<short, short> coordinate(const short& y_lower_bound, const short& y_upper_bound,
-		const short& x_lower_bound,
-		const short& x_upper_bound) noexcept
-	{
-		return std::make_pair(random<short>(y_lower_bound, y_upper_bound), random<short>(x_lower_bound, x_upper_bound));
-	}
-	template <typename _T>
-	NODISCARD static _T random(const _T& lower_bound, const _T& upper_bound) noexcept
-	{
-		std::uniform_int_distribution<_T> distribution(lower_bound, upper_bound);
-		return distribution(device_);
-	}
+    template<typename _T>
+    NODISCARD static _T uniform_int(const _T &lower_bound, const _T &upper_bound) noexcept {
+        std::uniform_int_distribution <_T> distribution(lower_bound, upper_bound);
+        return distribution(device_);
+    }
 
-	NODISCARD static short single(const short& lower_bound, const short& upper_bound) noexcept
-	{
-		return random<short>(lower_bound, upper_bound);
-	}
+    template<typename _T>
+    NODISCARD static _T uniform_real(const _T &lower_bound, const _T &upper_bound) noexcept {
+        std::uniform_real_distribution <_T> distribution(lower_bound, upper_bound);
+        return distribution(device_);
+    }
 
-	NODISCARD static std::chrono::milliseconds time(const short& lower_bound = 5000,
-		const short& upper_bound = 15000) noexcept
-	{
-		return std::chrono::milliseconds(random<long long>(lower_bound, upper_bound));
-	}
+    NODISCARD static std::pair<short, short>
+    coordinate(const short &y_lower_bound,
+               const short &y_upper_bound,
+               const short &x_lower_bound,
+               const short &x_upper_bound) noexcept {
+        return std::make_pair(uniform_int<short>(y_lower_bound, y_upper_bound),
+                              uniform_int<short>(x_lower_bound, x_upper_bound));
+    }
+
+    NODISCARD static direction direct() noexcept {
+        return static_cast<direction>(uniform_int<int>(1, 4));
+    }
+
+    NODISCARD static short single(const short &lower_bound, const short &upper_bound) noexcept {
+        return uniform_int<short>(lower_bound, upper_bound);
+    }
+
+    NODISCARD static std::chrono::milliseconds time(const short &lower_bound = 5000,
+                                                    const short &upper_bound = 15000) noexcept {
+        return std::chrono::milliseconds(uniform_int<long long>(lower_bound, upper_bound));
+    }
 
 private:
-	static std::random_device device_;
-}generator;
+    static std::random_device device_;
+} generator;
 
 export std::random_device Generator::device_;

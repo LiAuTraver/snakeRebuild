@@ -43,10 +43,10 @@ public:
 	short score;
 public:
 	virtual Snake& show() noexcept override {
-		Entity::show();
 		for (auto& node : nodes) {
 			node.show();
 		}
+		Entity::show();
 		return *this;
 	};
 	int check() const  noexcept
@@ -80,7 +80,7 @@ public:
 				break;
 			default:
 				[[unlikely]];
-				//exit(INVALID_DIRECTION_INPUT);
+                std::unreachable();
 			}
 		}
 		return *this;
