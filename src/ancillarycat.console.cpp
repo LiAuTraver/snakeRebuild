@@ -69,8 +69,8 @@ Console &Console::setAnsi(const WORD attribute) noexcept {
 }
 
 // console interaction
-int Console::getch(const bool &needRealKey) noexcept {
-    return needRealKey ? _kbhit() : _getch();
+int Console::getch(const bool &notNeedRealKey) noexcept {
+    return notNeedRealKey ? _kbhit() : _getch();
 }
 
 Console &Console::box(const SHORT &curRow, const SHORT &curCol, SHORT boxHeight, SHORT boxWidth, const char &border,

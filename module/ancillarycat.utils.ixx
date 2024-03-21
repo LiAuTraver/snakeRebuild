@@ -5,7 +5,7 @@ import ancillarycat.entities;
 import std;
 namespace utils
 {
-export int checkInvalidPosition(Entity&, Entity&);
+export int checkInvalidPosition(const Entity&, const Entity&);
 export int checkSnakeFood(const Snake&, const Food&);
 export int checkOutofBound(const Entity&);
 export std::chrono::seconds timer(const std::chrono::milliseconds& duration = std::chrono::milliseconds(INTERVALS));

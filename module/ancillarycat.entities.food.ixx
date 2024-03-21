@@ -1,7 +1,5 @@
 module;
-
 #include "../include/config.hpp"
-
 export module ancillarycat.entities:food;
 
 import :entity;
@@ -13,58 +11,79 @@ export class Star;
 
 class Food : public Entity {
 public:
-    // as now food is simple, I don't think it's necessary to have lots of ctor
-    explicit Food(const char &_c) : Entity(GENERATE, _c) {
-        Entity::show();
-        count++;
-    }
-
-    virtual ~Food() noexcept override {}
-
+	// as now food is simple, I don't think it's necessary to have lots of ctor
+	explicit Food(const char& _c) : Entity(GENERATE, _c) {
+		Entity::show();
+		Food::countFood_++;
+	}
+	virtual ~Food() noexcept override
+	{
+		countFood_--;
+	}
 public:
-    short weight = 0;
-    static short count;
+	[[nodiscard]] virtual short weight() const noexcept final {
+		return weight_;
+	}
+	[[nodiscard]] virtual constexpr unsigned short count() const noexcept override {
+		return countFood_;
+	}
+protected:
+	short weight_ = 0;
+private:
+	static unsigned short countFood_;
 };
 
-export short Food::count = 0;
+unsigned short Food::countFood_ = 0;
 
-class Dollar : public Food {
+class Star final : public Food {
 public:
-    explicit Dollar() : Food('$') {
-        count++;
-    }
-
-    virtual ~Dollar() noexcept override {}
-public:
-    short weight = 2;
-    static short count;
+	explicit Star() : Food('*') {
+		countStar_++;
+		weight_ = 1;
+	}
+	virtual ~Star() noexcept override
+	{
+		countStar_--;
+	}
+private:
+	static unsigned short countStar_;
 };
 
-export short Dollar::count = 0;
+unsigned short Star::countStar_ = 0;
 
-class Exclamation : public Food {
+class Dollar final : public Food {
 public:
-    explicit Exclamation() : Food('!') {
-        count++;
-    }
-
-    virtual ~Exclamation() noexcept override {}
+	explicit Dollar() : Food('$') {
+		countDollar_++;
+		weight_ = 2;
+	}
+	virtual ~Dollar() noexcept override
+	{
+		countDollar_--;
+	}
 public:
-    short weight = 3;
-    static short count;
+	[[nodiscard]] virtual constexpr unsigned short count() const noexcept override {
+		return countDollar_;
+	}
+private:
+	static unsigned short countDollar_;
 };
 
-export short Exclamation::count = 0;
+unsigned short Dollar::countDollar_ = 0;
 
-class Star : public Food {
+
+class Exclamation final : public Food {
 public:
-    explicit Star() : Food('*') {
-        count++;
-    }
-    virtual ~Star() noexcept override {}
-public:
-    short weight = 1;
-    static short count;
+	explicit Exclamation() : Food('!') {
+		countExclamation_++;
+		weight_ = 3;
+	}
+	virtual ~Exclamation() noexcept override
+	{
+		countExclamation_--;
+	}
+private:
+	static unsigned short countExclamation_;
 };
 
-export short Star::count = 0;
+unsigned short Exclamation::countExclamation_ = 0;

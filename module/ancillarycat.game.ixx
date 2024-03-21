@@ -7,7 +7,7 @@ import :config;
 import std;
 export namespace game
 {
-int gameOver(Snake&);
+int gameOver(const Snake&);
 void gameInit();
 int snakeGame();
 void score_logger(const short&);

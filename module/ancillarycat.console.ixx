@@ -18,7 +18,7 @@ public:
 	Console& moveCursor(const SHORT deltaRow = 0, const SHORT deltaCol = 0);
 	Console& resetAnsi() noexcept;
 	Console& setAnsi(const WORD attribute) noexcept;
-	static int getch(const bool& needRealKey = false) noexcept;
+	static int getch(const bool& notNeedRealKey = false) noexcept;
 	Console& box(const SHORT& curRow = 0, const SHORT& curCol = 0, SHORT boxHeight = DEFAULT_VAL, SHORT boxWidth = DEFAULT_VAL, const char& border = '+', const char& horizontal = '-', const char& vertical = '|');
     template<typename... Args>
     Console& print(const std::string_view str, const ansiColor& color = ansiColor::white, const ansiBackground& background = ansiBackground::reset, Args&&... args) noexcept

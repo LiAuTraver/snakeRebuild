@@ -1,3 +1,7 @@
+# experimental cmake file
+
+# successful cmake file
+
 cmake_minimum_required(VERSION 3.27)
 project(snakeRebuild)
 
@@ -104,6 +108,9 @@ target_link_libraries(
         std.compat
         std
 )
+
+# another method
+
 # not working!
 #function(build_all_modules)
 #    foreach (module ${ARGN})

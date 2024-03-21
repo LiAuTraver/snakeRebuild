@@ -24,19 +24,20 @@ int checkSnakeFood(const Snake& snake, const Food& food) {
 	return VALID;
 }
 
-int checkInvalidPosition(Entity& entity1, Entity& entity2) {
+int checkInvalidPosition(const Entity& entity1, const Entity& entity2) {
 	// we can use 'static_cast' when we have the guarantee that the cast is safe and valid,
 	//			otherwise, it may lead to undefined behavior.
 	// In that case, we should use 'dynamic_cast' instead.
-	if (entity1.y == entity2.y && entity1.x == entity2.x) {
+	if (entity1.getY() == entity2.getY() && entity1.getX() == entity2.getX()) {
 		return INVALID;
 	}
-	if (instanceof<Entity, Snake>(&entity1) && instanceof<Entity, Food>(&entity2)) {
-		return checkSnakeFood(static_cast<Snake&>(entity1), static_cast<Food&>(entity2));
-	}
-	if (instanceof<Entity, Food>(&entity1) && instanceof<Entity, Snake>(&entity2)) {
-		return checkSnakeFood(static_cast<Snake&>(entity2), static_cast<Food&>(entity1));
-	}
+	// bug here, see the definition of `instanceof`
+	//if (instanceof<Entity, Snake>(&entity1) && instanceof<Entity, Food>(&entity2)) {
+	//	return checkSnakeFood(static_cast<Snake&>(entity1), static_cast<Food&>(entity2));
+	//}
+	//if (instanceof<Entity, Food>(&entity1) && instanceof<Entity, Snake>(&entity2)) {
+	//	return checkSnakeFood(static_cast<Snake&>(entity2), static_cast<Food&>(entity1));
+	//}
 	return VALID;
 }
 
@@ -45,6 +46,7 @@ int checkInvalidPosition(Entity& entity1, Entity& entity2) {
 * @param base the base pointer
 * @return true if the base pointer is an instance of the derived class, otherwise false
 * @note this can be viewed as the keyword `instanceof` in Java
+* @note there are some bug here, dynamic_cast resulting in reading access violation
 */
 template <class _MyBase, class _MyDerived>
 	requires std::is_base_of_v<_MyBase, _MyDerived>

@@ -185,7 +185,6 @@ inline int oninitialize() {
 		if (handler::showInvalidConsoleSize() == RESTART_PROGRAM)
 			console.bot("Restarting the program...", ansiColor::yellow, ansiBackground::blueIntense);
 		return RESTART_PROGRAM;
-		return EXIT_PROGRAM;
 	}
 	console.clear();
 	api::initializeSoundEvent();
