@@ -1,9 +1,11 @@
 module;
-
+#include "../include/config.hpp"
 export module ancillarycat.api;
 export import :ansi;
 export import :windows;
 export import :generator;
+import std;
+
 namespace api
 {
 export std::string get_time();
@@ -17,7 +19,7 @@ std::string get_time()
 	// Convert to local time
 	const std::tm* current_time = std::localtime(&now_time_t);
 	std::ostringstream os_time(std::ios::out);
-	os_time << std::put_time(current_time, "%Y-%m-%d %H:%M:%S");
+	os_time << std::put_time(current_time, "%H:%M:%S-in-%Y-%m-%d");
 	return os_time.str();
 }
 }

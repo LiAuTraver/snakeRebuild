@@ -16,7 +16,7 @@ public:
 		Entity::show();
 		Food::countFood_++;
 	}
-	virtual ~Food() noexcept override
+	~Food() noexcept override
 	{
 		countFood_--;
 	}
@@ -24,7 +24,8 @@ public:
 	[[nodiscard]] virtual short weight() const noexcept final {
 		return weight_;
 	}
-	[[nodiscard]] virtual constexpr unsigned short count() const noexcept override {
+
+    [[nodiscard]] virtual constexpr unsigned short count() const noexcept {
 		return countFood_;
 	}
 protected:
@@ -41,7 +42,7 @@ public:
 		countStar_++;
 		weight_ = 1;
 	}
-	virtual ~Star() noexcept override
+	~Star() noexcept override
 	{
 		countStar_--;
 	}
@@ -57,12 +58,12 @@ public:
 		countDollar_++;
 		weight_ = 2;
 	}
-	virtual ~Dollar() noexcept override
+	~Dollar() noexcept override
 	{
 		countDollar_--;
 	}
 public:
-	[[nodiscard]] virtual constexpr unsigned short count() const noexcept override {
+	[[nodiscard]] constexpr unsigned short count() const noexcept override {
 		return countDollar_;
 	}
 private:
@@ -78,7 +79,7 @@ public:
 		countExclamation_++;
 		weight_ = 3;
 	}
-	virtual ~Exclamation() noexcept override
+	~Exclamation() noexcept override
 	{
 		countExclamation_--;
 	}

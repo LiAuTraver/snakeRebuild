@@ -17,18 +17,15 @@ std::unique_ptr<Food> generate_food() noexcept {
 	case 1: [[fallthrough]];
 	case 2: [[fallthrough]];
 	case 3:
-		food = std::make_unique<Star>();
-		break;
+		return std::move(std::make_unique<Star>());
 	case 4: [[fallthrough]];
 	case 5:
-		food = std::make_unique<Dollar>();
-		break;
+		return std::move(std::make_unique<Dollar>());
 	case 6:
-		food = std::make_unique<Exclamation>();
-		break;
+		return std::move(std::make_unique<Exclamation>());
 	default:
 		std::unreachable();
 	}
-	return std::move(food);
+	//std::unreachable();
 }
 

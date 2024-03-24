@@ -49,13 +49,20 @@ public:
 		Entity::show();
 		return *this;
 	};
-	int check() const  noexcept
+	int check() noexcept
 	{
-		for (const auto& node : this->nodes) {
-			if (node.y == this->y && node.x == this->x) {
-				return INVALID;
-			}
-		}
+		for (auto it = nodes.begin(); it < nodes.end(); it++)
+			if (it->y == y && it->x == x)
+				if (BODY_CUT) {
+					this->length = std::distance(it, nodes.begin()) + 1;
+					for (auto& i = it; i < nodes.end(); i++)
+						i->erase();
+					while(nodes.size() > this->length)
+						nodes.pop_back();
+					return VALID;
+				}
+				else return INVALID;
+		// else the snake is valid
 		return VALID;
 	}
 	Snake& grow(const short& offset = 1, const short& add_score = -1) noexcept {
@@ -80,7 +87,7 @@ public:
 				break;
 			default:
 				[[unlikely]];
-                std::unreachable();
+				std::unreachable();
 			}
 		}
 		return *this;

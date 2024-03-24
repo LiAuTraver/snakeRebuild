@@ -1,5 +1,6 @@
 module;
 #include <Windows.h>
+#include <csignal>
 #include "../include/config.hpp"
 export module ancillarycat.game:leaderboard;
 import std;
@@ -8,10 +9,12 @@ import ancillarycat.api;
 namespace game
 {
 export const std::array<std::string, 5> LEADERBOARD_PRESET{
-"|Rank|\t","|Name|\t", "|Score|\t", "|Time|\t", "|Game Time|\t"
+"|Rank|","|Name|", "|Score|", "|Time(ms)|", "|Game Play Date|"
 };
 NO_EXPORT constinit inline short line = 1;
 NO_EXPORT constinit static bool writeAccess = true;
+NO_EXPORT int readLeaderboard();
+NO_EXPORT int writeFile();
 using Record = std::tuple<std::string, short, std::chrono::milliseconds, std::string>;
 Record currentRank;
 class RankComparator final {
@@ -32,86 +35,112 @@ public:
 		return std::get<0>(record1) < std::get<0>(record2);
 	}
 };
-std::multiset<Record, RankComparator> rankBuffer;
+std::set<Record, RankComparator> rankBuffer;
 // create/open a file to store the leaderboard
 int leaderboardInit() {
 	//check whether the file exists
 	if (std::ifstream checkFile("leaderboard.snake", std::ios::in); checkFile.fail()) {
 		checkFile.close();
 		console
-			.bot("Warning: Unable to locate leaderboard file. Attempting to create one...", ansiColor::yellow, ansiBackground::black);
-		std::ofstream file("leaderboard.snake", std::ios::out);
-		if (file.fail())
+			.top("Warning: Unable to locate leaderboard file. Attempting to create one...", ansiColor::yellow, ansiBackground::black);
+		std::ofstream out("leaderboard.snake", std::ios::out);
+		if (out.fail())
 			return WRITE_ACCESS_DENIED;
-		std::ranges::for_each(SNAKE_GAME, [&file](const std::string& s)mutable {line++; file << s << "\n"; });
-		std::ranges::for_each(LEADERBOARD_PRESET, [&file](const std::string& s) {file << s; });
-		line++;
-		file << api::get_time() << "\n";
-		file.close();
+		std::ranges::for_each(SNAKE_GAME, [&out](const std::string& s)mutable {line++; out << s << "\n"; });
+		std::ranges::for_each(LEADERBOARD_PRESET, [&out](const std::string& s) {out << s; });
+		out << "\n"
+			<< api::get_time()
+			<< "\n"
+			<< PLACEHOLDER
+			<< "\n";
+		out.close();
 	}
+	readLeaderboard();
 	return HAS_WRITE_ACCESS;
 }
 export int writeBuffer(const short& score, const std::chrono::milliseconds& gameTime)
 {
+	std::this_thread::sleep_for(std::chrono::seconds(1));
 	if (!writeAccess) {
 		console
 			.setStyle(ansiStyle::blink)
-			.top("Error: Unable to write to leaderboard file. Your game record may lost", ansiColor::red, ansiBackground::black);
-		std::this_thread::sleep_for(std::chrono::seconds(2));
+			.top("Error: Unable to write to leaderboard file. Your game record may lost", ansiColor::red, ansiBackground::black, 3000);
 		return WRITE_ACCESS_DENIED;
 	}
 	std::string name;
 	console
 		.setStyle(ansiStyle::blink)
-		.centeredShuttle(console.height - 2, "New Record! Enter your name:", ansiColor::red, ansiBackground::white);
-	std::print("\033[{}m", static_cast<int>(ansiBackground::white));
-	console
-		.fillLine(' ')
-		.setCursorCoordinate(console.height - 1, 0)
-		.setCursorState(true);
+		.top("New Record! Enter your name:", ansiColor::red, ansiBackground::white, 30000)
+		.setCursorCoordinate(2, 0)
+		.reset(false)
+		.centered("", ansiColor::blueIntense, ansiBackground::white, false)
+		.setStyle(ansiStyle::underline);
 	std::cin >> name;
-	console.setCursorState(false)
-		.fillLine(' ')
-		.bot("Record Saved. Check the leaderboard!", ansiColor::green, ansiBackground::black);
+	console
+		.reset(true)
+		.top("Record Saved. Check the leaderboard!", ansiColor::green, ansiBackground::black, 0);
+	std::this_thread::sleep_for(std::chrono::seconds(3));
 	rankBuffer.insert(std::make_tuple(name, score, gameTime, api::get_time()));
 	// resize to only record the top 10
-	while (rankBuffer.size() > MAX_RANKING_NUMBER) {
+	while (rankBuffer.size() > MAX_RANKING_NUMBER)
 		rankBuffer.erase(std::prev(rankBuffer.end()));
-	}
-	std::this_thread::sleep_for(std::chrono::seconds(2));
+	return writeFile();
+}
+NO_EXPORT int writeFile()
+{
+	std::ofstream out("leaderboard.snake", std::ios::out);
+	if (out.fail())
+		return WRITE_ACCESS_DENIED;
+	std::ranges::for_each(SNAKE_GAME, [&out](const std::string& s) {out << s << "\n"; });
+	std::ranges::for_each(LEADERBOARD_PRESET, [&out](const std::string& s) {out << std::setw(6) << s; });
+	out << "\n"
+		<< api::get_time()
+		<< "\n"
+		<< PLACEHOLDER
+		<< "\n";
+	short rank = 1;
+	std::ranges::for_each(rankBuffer, [&](const Record& record) mutable -> void {
+		out << rank++ << " "
+			<< std::get<0>(record) << " "
+			<< std::get<1>(record) << " "
+			<< std::get<2>(record).count() << " "
+			<< std::get<3>(record) << "\n";
+		});
+	out.close();
 	return HAS_WRITE_ACCESS;
 }
+
 int readLeaderboard()
 {
 	std::fstream in("leaderboard.snake", std::ios::in);
 	if (in.fail())
 		return READ_ACCESS_DENIED;
 	std::string recordLine;
-	for (auto i = 0; i < line - 1; i++)
+	while (std::getline(in, recordLine))
 	{
-		if (!std::getline(in, recordLine))
-		{
+		if (recordLine == PLACEHOLDER)
+			break;
+		if (in.eof()) {
 			console
 				.setStyle(ansiStyle::blink)
-				.bot("Warning: not enough lines.", ansiColor::yellowIntense, ansiBackground::black);
-			std::this_thread::sleep_for(std::chrono::seconds(2));
-			return READ_ACCESS_DENIED;
+				.bot("Warning: Record file might be corrupted.", ansiColor::yellowIntense, ansiBackground::black, 3000);
+			api::soundEvent();
 		}
 	}
 	while (std::getline(in, recordLine))
 	{
-		std::stringstream ss(recordLine, std::ios::out);
+		std::stringstream ss(recordLine);
 		std::string name;
 		short score;
 		long long gameTime;
 		std::string time;
-		ss >> name >> score >> gameTime >> time;
-		if (!ss.eof())
-		{
+		int _;
+		while (ss.peek() == '\n' || ss.peek() == '\r')ss.ignore();
+		ss >> _ >> name >> score >> gameTime >> time;
+		if (!ss || ss.fail() || !ss.eof()) {
 			console
 				.setStyle(ansiStyle::blink)
-				.bot("Warning: Record file might be corrupted.", ansiColor::yellowIntense, ansiBackground::black);
-			std::this_thread::sleep_for(std::chrono::seconds(1));
+				.bot("Warning: Record file might be corrupted.", ansiColor::yellowIntense, ansiBackground::black, 3000);
 			api::soundEvent();
 		}
 		rankBuffer.insert(std::make_tuple(name, score, std::chrono::milliseconds(gameTime), time));
@@ -121,7 +150,6 @@ int readLeaderboard()
 		rankBuffer.erase(std::prev(rankBuffer.end()));
 	}
 	in.close();
-	std::this_thread::sleep_for(std::chrono::seconds(2));
 	return HAS_READ_ACCESS;
 }
 
@@ -131,42 +159,58 @@ int snakeLeaderboard()
 		writeAccess = false;
 		console
 			.setStyle(ansiStyle::blink)
-			.bot("Error: Unable to create leaderboard file", ansiColor::red, ansiBackground::black);
+			.bot("Error: Unable to create leaderboard file", ansiColor::red, ansiBackground::black, 3000);
 		std::this_thread::sleep_for(std::chrono::seconds(2));
 		return WRITE_ACCESS_DENIED;
 	}
 	if (game::readLeaderboard() == READ_ACCESS_DENIED) {
 		console
 			.setStyle(ansiStyle::blink)
-			.centeredShuttle(console.height - 2, "Unable to read leaderboard file.", ansiColor::red, ansiBackground::black)
+			.centeredShuttle(console.height - 2, "Unable to read leaderboard file.", ansiColor::red, ansiBackground::black, 4000)
 			.setStyle(ansiStyle::blink)
 			.setStyle(ansiStyle::underline)
-			.bot(" If you're playing for the first time, just ignore the message.", ansiColor::yellowIntense, ansiBackground::black);
+			.bot(" If you're playing for the first time, just ignore the message.", ansiColor::yellowIntense, ansiBackground::black, 4000);
 		std::this_thread::sleep_for(std::chrono::seconds(4));
 		return READ_ACCESS_DENIED;
 	}
 	console
 		.clear()
 		.setCursorCoordinate(2, 0);
-	std::ranges::for_each(LEAD, [](const std::string& s) {
+	std::ranges::for_each(LEAD, [&](const std::string& s) {
 		console
 			.setStyle(ansiStyle::blink)
 			.centered(s, ansiColor::cyanIntense); });
 	console
 		.moveCursor(1, 0);
-	std::ranges::for_each(TOP10, [](const std::string& s) {
+	std::ranges::for_each(TOP10, [&](const std::string& s) {
 		console
 			.setStyle(ansiStyle::blink)
-			.centered(s, ansiColor::whiteIntense); });
+			.centered(s, ansiColor::whiteIntense);
+		});
 	console
 		.moveCursor(1, 0);
-	std::ranges::for_each(rankBuffer, [](const Record& record)
-		{
-			std::stringstream ss;
-			ss << std::get<0>(record) << " \t " << std::get<1>(record) << " \t " << std::get<2>(record) << " \t " << std::get<3>(record);
-			console.setStyle(ansiStyle::blink).centered(ss.str(), ansiColor::yellowIntense);
+	std::stringstream pre;
+	std::ranges::for_each(LEADERBOARD_PRESET, [&pre](const std::string& s) {pre << s; });
+	console
+		.setStyle(ansiStyle::blink)
+		.centered(pre.str(), ansiColor::yellowIntense);
+	short rank = 1;
+	std::ranges::for_each(rankBuffer, [&](const Record& record) mutable -> void {
+		std::stringstream iss;
+		iss << rank++ << "   "
+			<< std::get<0>(record) << "   "
+			<< std::get<1>(record) << "   "
+			<< std::get<2>(record) << "   "
+			<< std::get<3>(record);
+		console.setStyle(ansiStyle::blink).centered(iss.str(), ansiColor::yellowIntense);
 		});
-	console.getch();
+	signal(SIGINT, SIG_IGN);
+	while (int ch = console.getch()) {
+		if (ch == 'Q' || ch == 'q')break;
+		else console
+			.setStyle(ansiStyle::blink)
+			.bot("Note: press 'q' or 'Q' to exit", ansiColor::yellowIntense, ansiBackground::black, 3000);
+	}
 	return HAS_READ_ACCESS;
 }
 }

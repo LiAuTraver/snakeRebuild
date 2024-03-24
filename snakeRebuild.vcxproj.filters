@@ -29,7 +29,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\ancillarycat.console.cpp">
+    <ClCompile Include="src\ancillarycat.console.console.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\ancillarycat.entities.entity.cpp">
@@ -102,6 +102,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="module\ancillarycat.blocks.ixx">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="module\ancillarycat.blocks.block.ixx">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ancillarycat.console.point.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="module\ancillarycat.console.console.ixx">
       <Filter>Resource Files</Filter>
     </ClCompile>
   </ItemGroup>

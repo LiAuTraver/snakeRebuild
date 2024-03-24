@@ -49,12 +49,10 @@ inline int showInvalidConsoleSize() {
 }
 inline void defaultHandler() {
 	console
-		.moveCursor(1, 0)
 		.setStyle(ansiStyle::bold)
-		.centered("invalid key.", ansiColor::red, ansiBackground::yellowIntense)
+		.bot("invalid key.", ansiColor::red, ansiBackground::yellowIntense,3000)
 		.setCursorCoordinate(console.cursorRow, 0);
 	api::soundEvent();
-	std::this_thread::sleep_for(std::chrono::seconds(2));
 	console
 		.fillLine()
 		.setCursorCoordinate(console.cursorRow - 2, 0);
@@ -65,20 +63,10 @@ inline void handleCBreak() {
 
 	console
 		.setStyle(ansiStyle::blink)
-		.setCursorCoordinate(console.height - 5, 0)
-		.moveCursor(1, 0)
-		.centered("Ctrl + C does not work here :P", ansiColor::white, ansiBackground::red)
+		.centeredShuttle(console.height - 5,"Ctrl + C does not work here :P", ansiColor::white, ansiBackground::red,3000)
 		.setStyle(ansiStyle::reverse)
-		.moveCursor(1, 0)
-		.centered("Note: Press q or Q to quit", ansiColor::white, ansiBackground::red)
-		.setCursorCoordinate(console.height - 4, 0);
+		.centeredShuttle(console.height - 3,"Note: Press q or Q to quit", ansiColor::white, ansiBackground::red,3000);
 	api::soundEvent(LR"(\Media\Windows Logon.wav)");
-	std::this_thread::sleep_for(std::chrono::seconds(3));
-
-	console
-		.fillLine(' ', 4)
-		.setCursorCoordinate(console.height - 5, 0);
-
 	// Restore the original signal handler
 	signal(SIGINT, originalHandler);
 }
@@ -149,15 +137,16 @@ inline int option() {
 			defaultHandler();
 			break;
 		}
-		console.clear();
+		console.setCursorCoordinate(0,0);
 		handler::showMenu();
 	}
 	std::unreachable();
-	//return UNKNOWN_ERROR;
 }
 inline int showMenu()
 {
-	console.moveCursor(3, 0);
+	console
+		.clear()
+		.setCursorCoordinate(3, 0);
 	std::ranges::for_each(SNAKE, [](const std::string& str) {
 		console.centered(str);
 		});
@@ -186,7 +175,6 @@ inline int oninitialize() {
 			console.bot("Restarting the program...", ansiColor::yellow, ansiBackground::blueIntense);
 		return RESTART_PROGRAM;
 	}
-	console.clear();
 	api::initializeSoundEvent();
 	api::soundEvent(LR"(\Media\Alarm10.wav)");
 	handler::showMenu();

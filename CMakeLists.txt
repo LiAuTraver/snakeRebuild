@@ -1,5 +1,3 @@
-# experimental cmake file
-
 # successful cmake file
 
 cmake_minimum_required(VERSION 3.27)
@@ -38,9 +36,18 @@ target_link_libraries(ancillarycat.api
         ancillarycat.api.generator
 )
 # order matters!
+add_library(ancillarycat.console.console
+        module/ancillarycat.console.console.ixx
+        src/ancillarycat.console.console.cpp)
+add_library(ancillarycat.console.point
+        src/ancillarycat.console.point.ixx)
 add_library(ancillarycat.console
-        module/ancillarycat.console.ixx
-        src/ancillarycat.console.cpp)
+        module/ancillarycat.console.ixx)
+target_link_libraries(ancillarycat.console
+        PUBLIC
+        ancillarycat.console.point
+        ancillarycat.console.console
+)
 
 add_library(ancillarycat.entities.entity
         module/ancillarycat.entities.entity.ixx
@@ -81,6 +88,8 @@ add_library(ancillarycat.handler
         src/ancillarycat.handler.cpp
         module/ancillarycat.handler.ixx)
 
+add_library(ancillarycat.blocks.block
+        module/ancillarycat.blocks.block.ixx)
 add_library(ancillarycat.blocks.obstacle
         module/ancillarycat.blocks.obstacle.ixx)
 add_library(ancillarycat.blocks
@@ -88,6 +97,7 @@ add_library(ancillarycat.blocks
 
 target_link_libraries(ancillarycat.blocks
         PUBLIC
+        ancillarycat.blocks.block
         ancillarycat.blocks.obstacle
 )
 add_executable(snakeRebuild
@@ -100,10 +110,10 @@ target_link_libraries(
         PRIVATE
         ancillarycat.handler
         ancillarycat.game
-        ancillarycat.blocks
         ancillarycat.utils
-        ancillarycat.console
+        ancillarycat.blocks
         ancillarycat.entities
+        ancillarycat.console
         ancillarycat.api
         std.compat
         std
