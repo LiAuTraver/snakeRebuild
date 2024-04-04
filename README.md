@@ -84,7 +84,7 @@ Fully OOP, including simple inheritance and polymorphism
 
 Perfect error handling and notification
 
-![Code](C:\Users\LiAu\AppData\Roaming\Typora\typora-user-images\image-20240404134500231.png)
+![Code](img/code5.png)
 
 A print wrapper including text attributes using Variadic template
 
