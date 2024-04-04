@@ -47,7 +47,7 @@ void update_config() {
 	::FOOD_MAX_COUNT = options.at(14).second;
 	::BODY_CUT = options.at(15).second;
 	::WIN_SCORE = options.at(16).second;
-	console.bot("Succeffully updated the configuration.", ansiColor::greenIntense, ansiBackground::reset, 2000);
+	console.bot("Successfully updated the configuration.", ansiColor::greenIntense, ansiBackground::reset, 2000);
 }
 
 void print_selected() {
@@ -55,7 +55,7 @@ void print_selected() {
 	for (size_t i = 0; i < options.size(); i++) {
 		console.setCursorCoordinate(i + startRow, 0);
 		if (i == now) console.centered("{}: {}", ansiColor::cyanIntense, ansiBackground::yellowIntense, true, options.at(i).first, options.at(i).second);
-		// pending optimizationm, we don't need to refresh all options
+		// pending optimization, we don't need to refresh all options
 		else console.centered("{}: {}", ansiColor::cyanIntense, ansiBackground::black, true, options.at(i).first, options.at(i).second);
 
 	}

@@ -1,11 +1,13 @@
 # successful cmake file
 
 cmake_minimum_required(VERSION 3.27)
+set(CMAKE_CXX_COMPILER "cl.exe")
 project(snakeRebuild)
 
 # Set the C++ standard
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED YES)
+set(CMAKE_CXX_SCAN_FOR_MODULES NO)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /D module_bug /std:c++latest")
 # Enable module compilation
 add_compile_definitions(CMAKE_CXX_COMPILE_FEATURES="cxx_std_23")
@@ -17,12 +19,12 @@ target_sources(std
         module/std.ixx
 )
 set_property(TARGET std PROPERTY CXX_MODULES TRUE)
+
 add_library(std.compat
         module/std.ixx module/std.compat.ixx)
 
 add_library(ancillarycat.api.ansi
         src/ancillarycat.api.ansi.ixx)
-
 add_library(ancillarycat.api.windows
         src/ancillarycat.api.windows.ixx)
 add_library(ancillarycat.api.generator
@@ -32,13 +34,13 @@ add_library(ancillarycat.api
 target_link_libraries(ancillarycat.api
         PUBLIC
         ancillarycat.api.ansi
-        ancillarycat.api.windows
         ancillarycat.api.generator
+        ancillarycat.api.windows
 )
 # order matters!
 add_library(ancillarycat.console.console
-        module/ancillarycat.console.console.ixx
-        src/ancillarycat.console.console.cpp)
+        src/ancillarycat.console.console.cpp
+        module/ancillarycat.console.console.ixx)
 add_library(ancillarycat.console.point
         src/ancillarycat.console.point.ixx)
 add_library(ancillarycat.console
@@ -50,8 +52,8 @@ target_link_libraries(ancillarycat.console
 )
 
 add_library(ancillarycat.entities.entity
-        module/ancillarycat.entities.entity.ixx
-        src/ancillarycat.entities.entity.cpp)
+        src/ancillarycat.entities.entity.cpp
+        module/ancillarycat.entities.entity.ixx)
 add_library(ancillarycat.entities.snake
         module/ancillarycat.entities.snake.ixx)
 add_library(ancillarycat.entities.food
@@ -66,8 +68,8 @@ target_link_libraries(ancillarycat.entities
 )
 
 add_library(ancillarycat.utils
-        module/ancillarycat.utils.ixx
-        src/ancillarycat.utils.cpp)
+        src/ancillarycat.utils.cpp
+        module/ancillarycat.utils.ixx)
 
 add_library(ancillarycat.game.game
         src/ancillarycat.game.game.ixx)

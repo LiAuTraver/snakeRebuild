@@ -18,8 +18,8 @@ std::vector <std::unique_ptr<Food>> foods{};
 std::vector <std::unique_ptr<Block>> blocks{};
 constinit bool isIgnore = false;
 constinit int prevKey = -2;
-constinit long long START_INTERVAL = 250; // Start long longerval in milliseconds
-constinit long long MIN_INTERVAL = 100;   // Minimum long long in milliseconds
+constinit long long START_INTERVAL = 250; // Start `long long` interval in milliseconds
+constinit long long MIN_INTERVAL = 100;   // Minimum `long long` in milliseconds
 
 inline void score_logger(const short& score) {
 	const std::string current_score = "Score: " + std::to_string(score);
@@ -38,7 +38,7 @@ inline void time_logger(const std::chrono::seconds& cur, const short& row, const
 }
 
 long long intervalChange() {
-	const short startLength = 10;    // Length at which to start decreasing the shorterval
+	const short startLength = 10;    // Length at which to start decreasing the short interval
 	const short targetLength = 30;   // Length at which the interval approaches MIN_INTERVAL but doesn't reach it
 
 	if (snake->length <= startLength) {
