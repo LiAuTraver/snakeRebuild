@@ -24,7 +24,7 @@ All done.
 
 ### Build With Cmake
 
-*This approach is not recommended due to the insufficient support of Cmake for C++ module. 
+*This approach is not recommended due to the insufficient support of Cmake for C++ module.*
 
 Cmake minimum version 3.27, Ninja minimum version 1.11.0
 
