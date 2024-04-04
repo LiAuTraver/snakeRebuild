@@ -80,7 +80,7 @@ Consistent naming convention
 
 Fully OOP, including simple inheritance and polymorphism
 
-![Code](.\img\code3.png)
+![Code](img/code3.png)
 
 Perfect error handling and notification
 
@@ -88,19 +88,19 @@ Perfect error handling and notification
 
 A print wrapper including text attributes using Variadic template
 
-![Code](.\img\code2.png)
+![Code](img/code2.png)
 
 A try of multi-threading and concurrency(may failed, experimental)
 
-![Code](.\img\code.png)
+![Code](img/code.png)
 
 Configurable game constant and program-in restart
 
-![In-Game Config](.\img\config.png)
+![In-Game Config](img/config.png)
 
 Interacting directly with Windows api
 
-![Code](.\img\code4.png)
+![Code](img/code4.png)
 
 Colorful UI and Windows build-in sound
 
@@ -108,9 +108,9 @@ Speed boost when snake growing
 
 Simple leaderboard and file I/O
 
-![Leaderboard](.\img\leaderboard.png)
+![Leaderboard](img/leaderboard.png)
 
-![Food, Snake and Obstacle](.\img\game.png)
+![Food, Snake and Obstacle](img/game.png)
 
 ### TODOs
 
