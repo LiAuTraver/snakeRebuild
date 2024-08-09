@@ -94,7 +94,7 @@ Console& Console::setAnsi(const WORD attribute) noexcept {
 
 // console interaction
 int Console::getch(const bool& notNeedRealKey) noexcept {
-	return notNeedRealKey ? ::kbhit() : ::_getch();
+	return notNeedRealKey ? :: _kbhit() : ::_getch();
 }
 
 Console& Console::box(const SHORT& curRow, const SHORT& curCol, SHORT boxHeight, SHORT boxWidth, const char& border,
